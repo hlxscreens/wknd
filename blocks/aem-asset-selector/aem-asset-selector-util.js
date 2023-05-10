@@ -75,6 +75,7 @@ async function setToClipboard(rennditionURL, mimetype) {
       `;
 
       data = [
+        // eslint-disable-next-line no-undef
         new ClipboardItem({ 'text/html': new Blob([block], { type: 'text/html' }) }),
       ];
     } else {
@@ -93,7 +94,7 @@ function handleSelection(selection) {
     // eslint-disable-next-line no-alert
     alert('Please select an approved asset only!!');
   } else {
-    const mimetype = selectedAsset.mimetype;
+    const { mimetype } = selectedAsset;
     let deliveryUrl;
     if (mimetype && mimetype.startsWith('image')) {
       deliveryUrl = `https://${selection[0]['repo:repositoryId'].replace('author', 'delivery')}`
@@ -125,7 +126,7 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     handleSelection,
     handleNavigateToAsset,
     env: cfg.environment.toUpperCase(),
-    apiKey: 'franklin'
+    apiKey: 'franklin',
   };
   const container = document.getElementById('asset-selector');
   // eslint-disable-next-line no-undef
