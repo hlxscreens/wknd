@@ -62,7 +62,7 @@ const fetchGet = async (endpoint, storeView, query, variables) => {
     api.searchParams.append('variables', JSON.stringify(variables));
 
     return await fetch(api, {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'content-Type': 'application/json',
             'store': storeView,
