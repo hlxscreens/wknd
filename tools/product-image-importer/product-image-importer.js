@@ -2,7 +2,7 @@ import fs from 'fs';
 import https from 'https';
 import getAllProducts from './queries/products.graphql.js';
 
-const endpoint = 'https://venia.magento.com/graphql';
+const endpoint = 'https://graphqlsidekick-p7pabzploq-uc.a.run.app';
 const imageFolder = './product-images';
 
 /**
