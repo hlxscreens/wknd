@@ -33,6 +33,7 @@ function load(cfg) {
   }
   };
   // eslint-disable-next-line no-undef
+  console.log("invoking IMS login")
   const registeredTokenService = PureJSSelectors.registerAssetsSelectorsAuthService(imsProps);
   imsInstance = registeredTokenService;
 }
@@ -135,15 +136,6 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     apiKey: 'franklin',
   };
 
-  const imsProps = {
-    imsClientId: cfg['ims-client-id'],
-    imsScope: 'additional_info.projectedProductContext,openid,read_organizations,AdobeID,ab.manage',
-    redirectUrl: window.location.href,
-    modalMode: true,
-    imsEnvironment,
-    env: imsEnvironment.toUpperCase(),
-  };
-
 
   const container = document.getElementById('asset-selector');
   // eslint-disable-next-line no-undef
@@ -151,6 +143,7 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
   //   const assetSelectorDialog = document.getElementById('asset-selector-dialog');
   //   assetSelectorDialog.showModal();
   // });
+  console.log("opening asset selector");
   PureJSSelectors.renderAssetSelectorWithAuthFlow(container, assetSelectorProps);
 }
 
