@@ -145,6 +145,9 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
   // });
   console.log("opening asset selector");
   PureJSSelectors.renderAssetSelectorWithAuthFlow(container, assetSelectorProps);
+  const assetSelectorDialog = document.getElementById('asset-selector-dialog');
+  assetSelectorDialog.showModal();
+
 }
 
 export async function logoutImsFlow() {
