@@ -9,19 +9,19 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1690356500110,
+  "timestamp": 1690458528191,
   "entries": [
     {
       "path": "/screens-demo/wknd-kiosk-commerce.html",
-      "timestamp": 1690296059000
+      "timestamp": 1690458527740
     },
     {
       "path": "/scripts/scripts.js",
-      "timestamp": 1690282148000
+      "timestamp": 1690449284000
     },
     {
       "path": "/styles/styles.css",
-      "timestamp": 1690294310000
+      "timestamp": 1690450385000
     },
     {
       "path": "/screens-demo/media_12593fe66c7eb756c8ca9bc938c4d976a45193076.png?width=750&format=png&optimize=medium",
@@ -49,7 +49,7 @@
     },
     {
       "path": "/blocks/idle-carousel/idle-carousel.js",
-      "timestamp": 1690275726000
+      "timestamp": 1690449284000
     },
     {
       "path": "/blocks/idle-carousel/idle-carousel.css",
@@ -57,19 +57,19 @@
     },
     {
       "path": "/blocks/category/category.js",
-      "timestamp": 1690294310000
+      "timestamp": 1690449284000
     },
     {
       "path": "/blocks/category/category.css",
-      "timestamp": 1690294309000
+      "timestamp": 1690449284000
     },
     {
       "path": "/blocks/product-listing/product-listing.css",
-      "timestamp": 1690294310000
+      "timestamp": 1690449284000
     },
     {
       "path": "/blocks/product-listing/product-listing.js",
-      "timestamp": 1690294310000
+      "timestamp": 1690452661000
     },
     {
       "path": "/styles/lazy-styles.css",
@@ -77,7 +77,7 @@
     },
     {
       "path": "/scripts/delayed.js",
-      "timestamp": 1690277350000
+      "timestamp": 1690449284000
     },
     {
       "path": "/scripts/lib-polaris.js",
