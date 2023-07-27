@@ -60,14 +60,57 @@ const fetchGet = async (endpoint, storeView, query, variables) => {
     const api = new URL(endpoint);
     api.searchParams.append('query', query);
     api.searchParams.append('variables', JSON.stringify(variables));
-
-    return await fetch(api, {
+    const jsonValue = `{
+        "data": {
+          "products": {
+            "items": [
+              {
+                "name": "Surf camp",
+                "sku": "trip-surf",
+                "url_key": "surf-camp",
+                "is_returnable": null,
+                "image": {
+                  "label": "Surf camp",
+                  "url": "https://jnz3dtiuj77ca.dummycachetest.com/media/catalog/product/cache/6e1cf7b8bcbe772e1a0e2f5447e60359/a/d/adobestock-175749320.jpg"
+                },
+                "small_image": {
+                  "label": "Surf camp",
+                  "url": "https://jnz3dtiuj77ca.dummycachetest.com/media/catalog/product/cache/6e1cf7b8bcbe772e1a0e2f5447e60359/a/d/adobestock-175749320.jpg"
+                },
+                "swatch_image": null,
+                "price_range": {
+                  "maximum_price": {
+                    "final_price": {
+                      "currency": "USD",
+                      "value": 1730
+                    }
+                  },
+                  "minimum_price": {
+                    "final_price": {
+                      "currency": "USD",
+                      "value": 200
+                    }
+                  }
+                }
+              }
+            ],
+            "page_info": {
+              "current_page": 1,
+              "page_size": 20,
+              "total_pages": 1
+            },
+            "total_count": 1
+          }
+        }
+      }`;
+    return jsonValue;
+    /*return await fetch(api, {
         method: 'GET',
         headers: {
             'content-Type': 'application/json',
             'store': storeView,
         },
-    }).then(res => res.json());
+    }).then(res => res.json());*/
 }
 
 /**
