@@ -6,6 +6,9 @@ let variantSelected;
 let ratingsLocation;
 let ratingsData;
 let description;
+let latitude;
+let longitude;
+let store;
 // const renderSkeleton = () => document.createElement('div');
 const backButtonClick = () => {
   const productListing = document.getElementsByClassName('product-listing')[0];
@@ -15,6 +18,19 @@ const backButtonClick = () => {
 
 const homeButtonClick = () => {
   onNavigate('category-container');
+};
+
+const fetchCoordinates = async () => {
+  if (navigator && navigator.geolocation) {
+    try {
+      await navigator.geolocation.getCurrentPosition((position) => {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 };
 
 const handleImgVariants = (event) => {
@@ -116,7 +132,7 @@ const getProductInfo = (product) => {
   console.log('desc', description);
   productDescriptionText.innerHTML = description.html;
   const locationDiv = document.createElement('div');
-  locationDiv.innerHTML = `Location in store - ${ratingsData.find((data) => data.SKU === product.sku).Location}`;
+  locationDiv.innerHTML = `Location in ${store} store - ${ratingsData.find((data) => data.SKU === product.sku).Location}`;
   productDescription.append(productTitle);
   productDescription.append(ratingsDiv);
   productDescription.append(productDescriptionText);
@@ -167,8 +183,14 @@ const observer = new MutationObserver((mutations) => {
           variantSelected = 1;
         }
         console.log(variantData);
-        const rawRatingsResponse = await fetch(ratingsLocation);
+        let url = ratingsLocation;
+        await fetchCoordinates();
+        if (latitude && longitude) {
+          url = `${ratingsLocation}?latitude=${latitude}&longitude=${longitude}`;
+        }
+        const rawRatingsResponse = await fetch(url);
         const ratingsresponse = await rawRatingsResponse.json();
+        store = ratingsresponse.store;
         ratingsData = ratingsresponse?.data;
         console.log(ratingsresponse?.data);
       } catch (e) {
