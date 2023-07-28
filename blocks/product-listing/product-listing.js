@@ -1,4 +1,4 @@
-import { onNavigate } from '../../scripts/scripts.js';
+import { onNavigate, sendAnalyticsEvent} from '../../scripts/scripts.js';
 
 let isLoading = false;
 let perPage = 10;
