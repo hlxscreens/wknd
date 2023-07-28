@@ -239,8 +239,7 @@
       "liveUrl": "https://main--wknd--hlxscreens.hlx.live/screens-demo/wknd-cafe-menuboard.html"
     },
     {
-      "manifestPath": "/screens-demo/wknd-kiosk-commerce.manifest.json",
-      "lastModified": "2023-07-28T16:20:11.000Z",
+      "lastModified": "2023-07-28T16:20:11.100Z",
       "hierarchy": [
         {
           "title": "screens-demo",
