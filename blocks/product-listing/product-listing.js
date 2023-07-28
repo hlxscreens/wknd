@@ -1,10 +1,12 @@
-import { onNavigate, sendAnalyticsEvent} from '../../scripts/scripts.js';
+import { onNavigate, sendAnalyticsEvent } from '../../scripts/scripts.js';
 
 let isLoading = false;
 let perPage = 10;
 let totalPages = 2;
 let currentPage = 1;
 let items;
+let ratingslocationURL;
+let ratingsData;
 const homeButtonClick = () => {
   sendAnalyticsEvent({
     type: 'click',
@@ -117,8 +119,12 @@ const getDetails = (product) => {
   title.textContent = product.name;
   const price = document.createElement('span');
   price.textContent = `Starts at $${product.price_range.minimum_price.final_price.value}`;
+  const ratingsDiv = document.createElement('div');
+  ratingsDiv.className = 'Stars';
+  ratingsDiv.style.setProperty('--rating', ratingsData.find((rating) => rating.SKU === product.sku).Rating);
   details.append(title);
   details.append(price);
+  details.append(ratingsDiv);
   return details;
 };
 
@@ -234,13 +240,17 @@ const observer = new MutationObserver((mutations) => {
       try {
         // const rawResponse = await fetch(`https://main--wknd--hlxscreens.hlx.page/defaultData/${categoryId}.json`);
         const rawResponse = await fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`);
-        if (!rawResponse.ok) {
+        const ratingsLocationRawResponse = await fetch(ratingslocationURL);
+        if (!rawResponse.ok || !ratingsLocationRawResponse.ok) {
           return;
         }
         console.log('ok response');
         // execute dom change
+        currentPage = 1;
         const response = await rawResponse.json();
+        const ratingsResponse = await ratingsLocationRawResponse.json();
         items = response.products.items;
+        ratingsData = ratingsResponse.data;
         const width = window.innerWidth;
         if (width > 1500) {
           perPage = 10;
@@ -262,6 +272,7 @@ const observer = new MutationObserver((mutations) => {
   }));
 });
 export default function decorate(block) {
+  ratingslocationURL = block.closest('.section').dataset.ratingsLocation;
   observer.observe(block, {
     attributes: true, // configure it to listen to attribute changes
   });
