@@ -1,4 +1,4 @@
-import { onNavigate } from '../../scripts/scripts.js';
+import { onNavigate, sendAnalyticsEvent } from '../../scripts/scripts.js';
 
 let isLoading = false;
 let variantData;
@@ -9,14 +9,35 @@ let description;
 let latitude;
 let longitude;
 let store;
+let sku;
 // const renderSkeleton = () => document.createElement('div');
 const backButtonClick = () => {
   const productListing = document.getElementsByClassName('product-listing')[0];
   productListing.setAttribute('update', true);
+  const { lastNavigationTime } = window;
+  const visitingTime = Math.floor((new Date() - lastNavigationTime) / 1000);
+  if (sku) {
+    sendAnalyticsEvent({
+      type: 'duration',
+      start: (new Date()).toISOString(),
+      end: (new Date()).toISOString(),
+      value: `Product with SKU ${sku} visited for ${visitingTime} seconds`,
+    });
+  }
   onNavigate('product-listing-container');
 };
 
 const homeButtonClick = () => {
+  const { lastNavigationTime } = window;
+  const visitingTime = Math.floor((new Date() - lastNavigationTime) / 1000);
+  if (sku) {
+    sendAnalyticsEvent({
+      type: 'duration',
+      start: (new Date()).toISOString(),
+      end: (new Date()).toISOString(),
+      value: `Product with SKU ${sku} visited for ${visitingTime} seconds`,
+    });
+  }
   onNavigate('category-container');
 };
 
@@ -174,7 +195,7 @@ const observer = new MutationObserver((mutations) => {
         if (section) {
           ratingsLocation = section[0].dataset.ratingsLocation;
         }
-        const { sku } = product;
+        sku = product.sku;
         const rawResponse = await fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`);
         const { items } = (await rawResponse.json()).products;
         if (Array.isArray(items) && items.length) {

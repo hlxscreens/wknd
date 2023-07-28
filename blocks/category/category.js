@@ -1,5 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { onNavigate } from '../../scripts/scripts.js';
+import { onNavigate, sendAnalyticsEvent } from '../../scripts/scripts.js';
 
 const onCategoryClick = (event) => {
   console.log('clicked');
@@ -13,6 +13,12 @@ const onCategoryClick = (event) => {
   productListing.textContent = '';
   productListing.setAttribute('category-name', categoryName);
   productListing.setAttribute('category-id', categoryId);
+  sendAnalyticsEvent({
+    type: 'click',
+    start: (new Date()).toISOString(),
+    end: (new Date()).toISOString(),
+    value: `Category with categoryId ${categoryId} visited`,
+  });
   onNavigate('product-listing-container');
 };
 

@@ -287,6 +287,7 @@ export function onNavigate(pathName) {
   console.log(section, pathName);
   // eslint-disable-next-line no-unused-expressions
   section && section.length > 0 && section[0].classList.add('displaySection');
+  window.lastNavigationTime = (new Date());
 }
 
 export function sendAnalyticsEvent(capturedData) {
@@ -304,6 +305,7 @@ export function sendAnalyticsEvent(capturedData) {
     'trn.quantity': 0,
     'event.subtype': '',
   };
+  console.log(capturedData.value);
   window.parent.postMessage(JSON.stringify({
     namespace: 'screens-player',
     type: 'analytics-tracking-event',

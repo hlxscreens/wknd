@@ -52,6 +52,12 @@ const onProductClick = (event) => {
   productDetail.textContent = '';
   productDetail.setAttribute('sku', selectedProductSKU);
   productDetail.setAttribute('data-object', JSON.stringify(selectedProduct));
+  sendAnalyticsEvent({
+    type: 'click',
+    start: (new Date()).toISOString(),
+    end: (new Date()).toISOString(),
+    value: `Product with SKU ${selectedProductSKU} visited`,
+  });
   onNavigate('product-detail-container');
 };
 
