@@ -64,7 +64,7 @@
   margin-top: 5rem;
   text-align: center;
   display: grid;
-  grid-template-columns: 5fr 5fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .product-info .product-info-img {
@@ -133,4 +133,9 @@
 
 .product-info-img-original.hide {
   display: none;
+}
+
+.product-description-text {
+  margin-top: 2rem;
+  text-align: left;
 }

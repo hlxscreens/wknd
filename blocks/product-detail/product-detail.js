@@ -3,6 +3,9 @@ import { onNavigate } from '../../scripts/scripts.js';
 let isLoading = false;
 let variantData;
 let variantSelected;
+let ratingsLocation;
+let ratingsData;
+let description;
 // const renderSkeleton = () => document.createElement('div');
 const backButtonClick = () => {
   const productListing = document.getElementsByClassName('product-listing')[0];
@@ -66,6 +69,7 @@ const getProductInfo = (product) => {
   console.log(variantSelected);
   if (variantData) {
     variantData.forEach((variant, idx) => {
+      if (idx > 4) return;
       const variantThumbnailDiv = document.createElement('div');
       variantThumbnailDiv.className = 'variants--variant';
       const variantThumbnailImg = new Image();
@@ -101,10 +105,24 @@ const getProductInfo = (product) => {
     productImgDiv.append(productImg);
   }
   // productInfo.append(variantsThumbnailFlexbox);
+  const productDescription = document.createElement('div');
   const productTitle = document.createElement('h1');
   productTitle.textContent = product.name;
+  const ratingsDiv = document.createElement('div');
+  ratingsDiv.className = 'Stars';
+  ratingsDiv.style.setProperty('--rating', ratingsData.find((rating) => rating.SKU === product.sku).Rating);
+  const productDescriptionText = document.createElement('div');
+  productDescriptionText.className = 'product-description-text';
+  console.log('desc', description);
+  productDescriptionText.innerHTML = description.html;
+  const locationDiv = document.createElement('div');
+  locationDiv.innerHTML = `Location in store - ${ratingsData.find((data) => data.SKU === product.sku).Location}`;
+  productDescription.append(productTitle);
+  productDescription.append(ratingsDiv);
+  productDescription.append(productDescriptionText);
+  productDescription.append(locationDiv);
   productInfo.append(productImgDiv);
-  productInfo.append(productTitle);
+  productInfo.append(productDescription);
   return productInfo;
 };
 
@@ -121,7 +139,7 @@ const renderProduct = (target, product) => {
 const observer = new MutationObserver((mutations) => {
   Promise.all(mutations.map(async (mutation) => {
     if (mutation.type === 'attributes') {
-      console.log('Mutation target', mutation.target);
+      // console.log('Mutation target', mutation.target);
       const productSKU = mutation.target.getAttribute('sku');
       const product = mutation.target.dataset?.object && JSON.parse(mutation.target.dataset.object);
       if (!productSKU || !product) return;
@@ -136,14 +154,23 @@ const observer = new MutationObserver((mutations) => {
       const response = product;
       try {
         console.log(product);
+        const section = document.getElementsByClassName('section product-listing-container');
+        if (section) {
+          ratingsLocation = section[0].dataset.ratingsLocation;
+        }
         const { sku } = product;
         const rawResponse = await fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`);
         const { items } = (await rawResponse.json()).products;
         if (Array.isArray(items) && items.length) {
+          description = items[0].description;
           variantData = items[0].variants;
           variantSelected = 1;
         }
         console.log(variantData);
+        const rawRatingsResponse = await fetch(ratingsLocation);
+        const ratingsresponse = await rawRatingsResponse.json();
+        ratingsData = ratingsresponse?.data;
+        console.log(ratingsresponse?.data);
       } catch (e) {
         console.log('error in fetching variants');
       }
