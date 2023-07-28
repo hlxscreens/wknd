@@ -32,10 +32,11 @@
 
 .category > h1 {
   text-align: center;
-  font-size: bold;
+  font-size: 700;
   text-transform: uppercase;
   margin-bottom: 5rem;
   margin-top: 5rem;
+  font-family: 'adobe-clean-bold', 'Source Sans Pro';
 }
 
 .category > ul > li {
@@ -53,10 +54,12 @@
   left: 50%;
   transform: translate(-50%, 0);
   color: white;
-  text-shadow: 1px 1px 1px lightblue;
+  /* text-shadow: 1px 1px 1px lightgrey; */
   text-transform: uppercase;
   margin: 0;
   margin-bottom: 2rem;
+  font-size: 400;
+  font-family: 'adobe-clean-bold', 'Source Sans Pro';
 }
 
 .category .category-image {

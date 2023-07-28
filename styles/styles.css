@@ -25,9 +25,9 @@
   --highlight-text-color: var(--text-color);
 
   /* fonts */
-  --body-font-family: 'Source Sans Pro', 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
-  --heading-font-family: asar, georgia, 'Times New Roman', times, serif;
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
+  --body-font-family: 'adobe-clean', 'Source Sans Pro', 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
+  --heading-font-family: 'adobe-clean-bold', asar, georgia, 'Times New Roman', times, serif;
+  --fixed-font-family: 'adobe-clean', 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -55,7 +55,7 @@
   --default-text-align: left;
   --star-size: 20px;
   --star-color: #fff;
-  --star-background: rgb(255, 204, 2);
+  --star-background: var(--color-yellow);
 }
 
 body {
@@ -466,6 +466,14 @@ main .section[data-section-status='initialized'] {
 @font-face {
   font-family: 'Bungee';
   src: url('Bungee-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'adobe-clean-bold';
+  src: url('AdobeClean-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'adobe-clean';
+  src: url('AdobeClean-Regular.ttf') format('truetype');
 }
 @font-face {
   font-family: 'Cabin-Sketch-Bold';
