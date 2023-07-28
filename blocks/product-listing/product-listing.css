@@ -184,3 +184,23 @@
 .right-rail.disable-button {
   opacity: 30%;
 }
+
+.Stars {
+  --percent: calc(var(--rating) / 5 * 100%);
+  display: inline-block;
+  font-size: var(--star-size);
+  font-family: Times;
+  line-height: 1;
+  margin-left: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.Stars::before {
+  content: '★★★★★';
+  letter-spacing: 1px;
+  box-sizing: border-box;
+  background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

@@ -53,6 +53,9 @@
 
   /* default content */
   --default-text-align: left;
+  --star-size: 20px;
+  --star-color: #fff;
+  --star-background: rgb(255, 204, 2);
 }
 
 body {
