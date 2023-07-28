@@ -26,7 +26,7 @@ const blocks = {
     'identifier': {
         'key': 'identifier',
         'name': 'Identifier only',
-        'output': i => i.isFolder ? i.id : i.url_key,  // url_key for product, id for category
+        'output': i => i.isFolder ? i.uid : i.url_key,  // url_key for product, id for category
         'selection': 'single',
         'type': 'any',
     },
