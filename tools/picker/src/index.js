@@ -33,15 +33,7 @@ const blocks = {
     'product-list-page': {
         'key': 'product-list-page',
         'name': 'Product List Page',
-        'output': i => `<table width="100%" style="border: 1px solid black;">
-    <tr>
-        <th colspan="2" style="border: 1px solid black; background: lightgray;">Product List Page</th>
-    </tr>
-    <tr>
-        <td style="border: 1px solid black">category</td>
-        <td style="border: 1px solid black">${i.id}</td>
-    </tr>
-</table>`,
+        'output': i => `${i.uid}`,
         'selection': 'single',
         'type': 'folder',
     }
