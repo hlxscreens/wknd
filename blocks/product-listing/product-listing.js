@@ -6,6 +6,12 @@ let totalPages = 2;
 let currentPage = 1;
 let items;
 const homeButtonClick = () => {
+  sendAnalyticsEvent({
+    type: 'click',
+    start: (new Date()).toISOString(),
+    end: (new Date()).toISOString(),
+    value: 'Home button clicked on product listing page',
+  });
   onNavigate('category-container');
 };
 
