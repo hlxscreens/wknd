@@ -18,6 +18,7 @@ export default function decorate(block) {
     </dialog>
     `;
   block.querySelector('#as-submit').addEventListener('click', () => {
+    console.log("submit button clicked");
     renderAssetSelectorWithImsFlow(cfg);
   });
 

@@ -1,4 +1,4 @@
-import { onNavigate } from '../../scripts/scripts.js';
+import { onNavigate, sendAnalyticsEvent } from '../../scripts/scripts.js';
 
 let isLoading = false;
 let perPage = 10;
@@ -8,6 +8,12 @@ let items;
 let ratingslocationURL;
 let ratingsData;
 const homeButtonClick = () => {
+  sendAnalyticsEvent({
+    type: 'click',
+    start: (new Date()).toISOString(),
+    end: (new Date()).toISOString(),
+    value: 'Home button clicked on product listing page',
+  });
   onNavigate('category-container');
 };
 

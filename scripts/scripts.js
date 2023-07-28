@@ -17,7 +17,6 @@ import {
 } from './lib-franklin.js';
 
 import decoratePolarisAssets from './lib-polaris.js';
-
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
@@ -270,17 +269,6 @@ async function loadPage() {
 
 loadPage();
 
-/* async function getMenuItems(menuName) {
-    try {
-      const response = await fetch('http://localhost:3000/screens-demo/product-list.json');
-      const data = await response.json();
-      const menuData = data[menuName].data;
-      return menuData;
-    } catch (error) {
-      console.log('Error:', error);
-    }
-  } */
-
 // Orchestrator
 
 export function onNavigate(pathName) {
@@ -301,6 +289,27 @@ export function onNavigate(pathName) {
   section && section.length > 0 && section[0].classList.add('displaySection');
 }
 
+export function sendAnalyticsEvent(capturedData) {
+  const data = {
+    'event.type': capturedData.type,
+    'event.coll_dts': capturedData.start,
+    'event.dts_start': capturedData.start,
+    'content.type': '',
+    'content.action': '',
+    'trn.product': '',
+    'trn.amount': 0,
+    'event.dts_end': capturedData.end,
+    'event.count': 0,
+    'event.value': capturedData.value,
+    'trn.quantity': 0,
+    'event.subtype': '',
+  };
+  window.parent.postMessage(JSON.stringify({
+    namespace: 'screens-player',
+    type: 'analytics-tracking-event',
+    data,
+  }),"*");
+}
 // export function sendAnalyticsEvent() {
 //   const data = {
 //     'event.type': 'play',

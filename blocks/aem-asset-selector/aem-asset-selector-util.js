@@ -25,8 +25,15 @@ function load(cfg) {
     modalMode: true,
     imsEnvironment,
     env: imsEnvironment.toUpperCase(),
+    adobeImsOptions: {
+      modalSettings: {
+          allowOrigin: window.location.origin,
+      },
+      useLocalStorage: true,
+  }
   };
   // eslint-disable-next-line no-undef
+  console.log("invoking IMS login")
   const registeredTokenService = PureJSSelectors.registerAssetsSelectorsAuthService(imsProps);
   imsInstance = registeredTokenService;
 }
@@ -128,12 +135,19 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     env: cfg.environment.toUpperCase(),
     apiKey: 'franklin',
   };
+
+
   const container = document.getElementById('asset-selector');
   // eslint-disable-next-line no-undef
-  PureJSSelectors.registerAssetsSelectorsAuthService(container, assetSelectorProps, () => {
-    const assetSelectorDialog = document.getElementById('asset-selector-dialog');
-    assetSelectorDialog.showModal();
-  });
+  // PureJSSelectors.registerAssetsSelectorsAuthService(container, assetSelectorProps, () => {
+  //   const assetSelectorDialog = document.getElementById('asset-selector-dialog');
+  //   assetSelectorDialog.showModal();
+  // });
+  console.log("opening asset selector");
+  PureJSSelectors.renderAssetSelectorWithAuthFlow(container, assetSelectorProps);
+  const assetSelectorDialog = document.getElementById('asset-selector-dialog');
+  assetSelectorDialog.showModal();
+
 }
 
 export async function logoutImsFlow() {
