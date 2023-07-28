@@ -9,19 +9,19 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1690509525877,
+  "timestamp": 1690547336862,
   "entries": [
     {
       "path": "/screens-demo/wknd-retail/locations/global/north-america/us/san-jose/west/test-player0.html",
-      "timestamp": 1690449285000
+      "timestamp": 1690546569000
     },
     {
       "path": "/scripts/scripts.js",
-      "timestamp": 1690449284000
+      "timestamp": 1690546571000
     },
     {
       "path": "/styles/styles.css",
-      "timestamp": 1690450385000
+      "timestamp": 1690546568000
     },
     {
       "path": "/blocks/screens-looping-content/screens-looping-content.js",
