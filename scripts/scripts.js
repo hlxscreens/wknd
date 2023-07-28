@@ -308,7 +308,7 @@ export function sendAnalyticsEvent(capturedData) {
     namespace: 'screens-player',
     type: 'analytics-tracking-event',
     data,
-  }));
+  }),"*");
 }
 // export function sendAnalyticsEvent() {
 //   const data = {
