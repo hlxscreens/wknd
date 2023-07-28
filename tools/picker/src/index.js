@@ -33,7 +33,7 @@ const blocks = {
     'product-list-page': {
         'key': 'product-list-page',
         'name': 'Product List Page',
-        'output': i => `${i.id}`,
+        'output': i => i.id,
         'selection': 'single',
         'type': 'folder',
     }
