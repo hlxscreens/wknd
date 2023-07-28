@@ -26,14 +26,14 @@ const blocks = {
     'identifier': {
         'key': 'identifier',
         'name': 'Identifier only',
-        'output': i => i.isFolder ? i.uid : i.url_key,  // url_key for product, id for category
+        'output': i => i.isFolder ? i.id : i.url_key,  // url_key for product, id for category
         'selection': 'single',
         'type': 'any',
     },
     'product-list-page': {
         'key': 'product-list-page',
         'name': 'Product List Page',
-        'output': i => `${i.uid}`,
+        'output': i => `${i.id}`,
         'selection': 'single',
         'type': 'folder',
     }
