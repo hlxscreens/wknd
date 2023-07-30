@@ -190,7 +190,7 @@ const getProductInfo = (product) => {
   const productDescriptionText = document.createElement('div');
   productDescriptionText.className = 'product-description-text';
   console.log('desc', description);
-  productDescriptionText.innerHTML = description.html;
+  productDescriptionText.innerHTML = description.html || '';
   const locationDiv = document.createElement('div');
   locationDiv.innerHTML = `Location in ${store} store - ${ratingsData.find((data) => data.SKU === product.sku).Location}`;
   productDescription.append(productTitle);
