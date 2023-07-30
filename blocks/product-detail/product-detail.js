@@ -10,6 +10,20 @@ let latitude;
 let longitude;
 let store;
 let sku;
+let offers;
+let offersData;
+
+const hasOffer = () => {
+  const isOfferEnabled = offers && offers.type && offers.count && offers.order && offers.discount;
+  return isOfferEnabled;
+};
+
+const productOnOffer = (productSku) => {
+  const isOfferEnabled = hasOffer();
+  if (!isOfferEnabled || !offersData) return false;
+  return offersData.find((productInOffer) => productInOffer.sku === productSku);
+};
+
 // const renderSkeleton = () => document.createElement('div');
 const backButtonClick = () => {
   const productListing = document.getElementsByClassName('product-listing')[0];
@@ -145,6 +159,31 @@ const getProductInfo = (product) => {
   const productDescription = document.createElement('div');
   const productTitle = document.createElement('h1');
   productTitle.textContent = product.name;
+  const productPrice = document.createElement('div');
+  const priceSpan = document.createElement('span');
+  priceSpan.textContent = 'Starts at $';
+  const price = document.createElement('span');
+  price.className = 'product-price';
+  price.textContent = `${product.price_range.minimum_price.final_price.value}`;
+  productPrice.append(priceSpan);
+  productPrice.append(price);
+  if (productOnOffer(product.sku)) {
+    price.classList.add('strike');
+    const originalPrice = product.price_range.minimum_price.final_price.value;
+    console.log(product.price_range.minimum_price.final_price.value);
+    console.log(product.price_range.minimum_price.final_price.value + 1);
+    const discount = Number(offers.discount.slice(0, -1));
+    const newPrice = (originalPrice * (100 - discount)) / 100;
+    const newPriceSpan = document.createElement('span');
+    newPriceSpan.className = 'newproduct-price';
+    const discountPrice = document.createElement('span');
+    discountPrice.textContent = `$${newPrice}`;
+    const discountDetail = document.createElement('span');
+    discountDetail.textContent = `(-${discount}%)`;
+    newPriceSpan.append(discountPrice);
+    newPriceSpan.append(discountDetail);
+    productPrice.append(newPriceSpan);
+  }
   const ratingsDiv = document.createElement('div');
   ratingsDiv.className = 'Stars';
   ratingsDiv.style.setProperty('--rating', ratingsData.find((rating) => rating.SKU === product.sku).Rating);
@@ -155,6 +194,7 @@ const getProductInfo = (product) => {
   const locationDiv = document.createElement('div');
   locationDiv.innerHTML = `Location in ${store} store - ${ratingsData.find((data) => data.SKU === product.sku).Location}`;
   productDescription.append(productTitle);
+  productDescription.append(productPrice);
   productDescription.append(ratingsDiv);
   productDescription.append(productDescriptionText);
   productDescription.append(locationDiv);
@@ -209,6 +249,11 @@ const observer = new MutationObserver((mutations) => {
         if (latitude && longitude) {
           url = `${ratingsLocation}?latitude=${latitude}&longitude=${longitude}`;
         }
+        if (hasOffer()) {
+          const offersRawResponse = await fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`);
+          offersData = await offersRawResponse.json();
+          console.log(offersData);
+        }
         const rawRatingsResponse = await fetch(url);
         const ratingsresponse = await rawRatingsResponse.json();
         store = ratingsresponse.store;
@@ -224,6 +269,20 @@ const observer = new MutationObserver((mutations) => {
   }));
 });
 export default function decorate(block) {
+  const offerContainer = document.getElementsByClassName('section offers-container');
+  if (offerContainer.length) {
+    const offersList = document.getElementsByClassName('offers block');
+    if (offersList.length) {
+      const [offersBlock] = offersList;
+      offers = {
+        type: offersBlock.children[0].children[0].textContent,
+        order: offersBlock.children[0].children[1].textContent,
+        count: offersBlock.children[0].children[2].textContent,
+        discount: offersBlock.children[0].children[3].textContent,
+      };
+      console.log('[offers]', offers);
+    }
+  }
   observer.observe(block, {
     attributes: true, // configure it to listen to attribute changes
   });

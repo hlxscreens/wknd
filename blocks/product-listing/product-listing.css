@@ -137,7 +137,7 @@
   flex-direction: column;
   text-align: left;
   color: black;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   white-space: nowrap;
   max-width: 250px;
@@ -150,7 +150,7 @@
   padding-left: 1rem;
 }
 
-.product-details span:nth-child(1) {
+.product-details:first-child {
   padding-top: 1rem;
 }
 
@@ -184,4 +184,27 @@
 
 .right-rail.disable-button {
   opacity: 30%;
+}
+
+.product-price {
+  padding-top: 0;
+  padding-left: 0 !important;
+}
+
+.newproduct-price > span {
+  padding-left: 0.5rem !important;
+}
+
+.newproduct-price {
+  padding-left: 0.5rem !important;
+  font-size: 1.2rem;
+}
+
+.newproduct-price span:nth-child(2) {
+  color: red;
+}
+
+.product-price.strike {
+  padding-top: 0;
+  text-decoration: line-through;
 }
