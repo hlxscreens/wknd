@@ -66,8 +66,8 @@
 }
 
 .product {
-  min-width: 250px;
-  min-height: 300px;
+  min-width: 206px;
+  min-height: 275px;
   max-width: 100%;
   max-height: 100%;
   display: flex;
@@ -78,8 +78,8 @@
 }
 
 .product .product-img {
-  width: 225px;
-  height: 300px;
+  width: 206px;
+  height: 275px;
   /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
   /* border-radius: 1rem; */
   /* overflow: hidden; */
