@@ -63,4 +63,5 @@
   display: block;
   height: 8vw;
   width: 6vw;
+  filter: invert(99%) sepia(11%) saturate(373%) hue-rotate(230deg) brightness(117%) contrast(100%);
 }
