@@ -230,31 +230,38 @@ const observer = new MutationObserver((mutations) => {
       // fetch from graphql apis
       const response = product;
       try {
-        console.log(product);
         const section = document.getElementsByClassName('section product-listing-container');
         if (section) {
           ratingsLocation = section[0].dataset.ratingsLocation;
         }
         sku = product.sku;
-        const rawResponse = await fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`);
+        let url = ratingsLocation;
+        await fetchCoordinates();
+        if (latitude && longitude) {
+          url = `${ratingsLocation}?latitude=${latitude}&longitude=${longitude}`;
+        }
+        let rawResponse;
+        let offersRawResponse;
+        let rawRatingsResponse;
+        if (hasOffer()) {
+          [rawResponse, rawRatingsResponse, offersRawResponse] = await Promise.all([
+            fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`),
+            fetch(url),
+            fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
+          ]);
+          offersData = await offersRawResponse.json();
+        } else {
+          [rawResponse, rawRatingsResponse] = await Promise.all([
+            fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`),
+            fetch(url),
+          ]);
+        }
         const { items } = (await rawResponse.json()).products;
         if (Array.isArray(items) && items.length) {
           description = items[0].description;
           variantData = items[0].variants;
           variantSelected = 1;
         }
-        console.log(variantData);
-        let url = ratingsLocation;
-        await fetchCoordinates();
-        if (latitude && longitude) {
-          url = `${ratingsLocation}?latitude=${latitude}&longitude=${longitude}`;
-        }
-        if (hasOffer()) {
-          const offersRawResponse = await fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`);
-          offersData = await offersRawResponse.json();
-          console.log(offersData);
-        }
-        const rawRatingsResponse = await fetch(url);
         const ratingsresponse = await rawRatingsResponse.json();
         store = ratingsresponse.store;
         ratingsData = ratingsresponse?.data;

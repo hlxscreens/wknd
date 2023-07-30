@@ -281,12 +281,21 @@ const observer = new MutationObserver((mutations) => {
       isLoading = true;
       try {
         // const rawResponse = await fetch(`https://main--wknd--hlxscreens.hlx.page/defaultData/${categoryId}.json`);
-        const rawResponse = await fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`);
-        const ratingsLocationRawResponse = await fetch(ratingslocationURL);
+        let rawResponse;
+        let ratingsLocationRawResponse;
+        let offersRawResponse;
         if (hasOffer()) {
-          const offersRawResponse = await fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`);
+          [rawResponse, ratingsLocationRawResponse, offersRawResponse] = await Promise.all([
+            fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
+            fetch(ratingslocationURL),
+            fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`)
+          ]);
           offersData = await offersRawResponse.json();
-          console.log(offersData);
+        } else {
+          [rawResponse, ratingsLocationRawResponse] = await Promise.all([
+            fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
+            fetch(ratingslocationURL),
+          ]);
         }
         if (!rawResponse.ok || !ratingsLocationRawResponse.ok) {
           return;
