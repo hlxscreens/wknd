@@ -9,6 +9,7 @@ let ratingslocationURL;
 let ratingsData;
 let offers;
 let offersData;
+let store;
 const homeButtonClick = () => {
   sendAnalyticsEvent({
     type: 'click',
@@ -138,23 +139,32 @@ const getDetails = (product) => {
   title.textContent = product.name;
   const productPrice = document.createElement('div');
   const priceSpan = document.createElement('span');
-  priceSpan.textContent = 'Starts at $';
   const price = document.createElement('span');
   price.className = 'product-price';
+  priceSpan.textContent = 'Starts at $';
   price.textContent = `${product.price_range.minimum_price.final_price.value}`;
+  if (store && store === 'noida') {
+    priceSpan.textContent = 'Starts at ₹';
+    price.textContent = `${product.price_range.minimum_price.final_price.value * 80}`;
+  }
   productPrice.append(priceSpan);
   productPrice.append(price);
   if (productOnOffer(product.sku)) {
     price.classList.add('strike');
-    const originalPrice = product.price_range.minimum_price.final_price.value;
-    console.log(product.price_range.minimum_price.final_price.value);
-    console.log(product.price_range.minimum_price.final_price.value + 1);
+    let originalPrice;
+    originalPrice = product.price_range.minimum_price.final_price.value;
+    if (store && store === 'noida') {
+      originalPrice *= 80;
+    }
     const discount = Number(offers.discount.slice(0, -1));
     const newPrice = (originalPrice * (100 - discount)) / 100;
     const newPriceSpan = document.createElement('span');
     newPriceSpan.className = 'newproduct-price';
     const discountPrice = document.createElement('span');
     discountPrice.textContent = `$${newPrice}`;
+    if (store && store === 'noida') {
+      discountPrice.textContent = `₹${newPrice}`;
+    }
     const discountDetail = document.createElement('span');
     discountDetail.textContent = `(-${discount}%)`;
     newPriceSpan.append(discountPrice);
@@ -305,6 +315,7 @@ const observer = new MutationObserver((mutations) => {
         currentPage = 1;
         const response = await rawResponse.json();
         const ratingsResponse = await ratingsLocationRawResponse.json();
+        store = ratingsResponse.store;
         items = response.products.items;
         ratingsData = ratingsResponse.data;
         const width = window.innerWidth;
