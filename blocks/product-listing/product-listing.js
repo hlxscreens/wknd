@@ -10,6 +10,20 @@ let ratingsData;
 let offers;
 let offersData;
 let store;
+let latitude;
+let longitude;
+const fetchCoordinates = async () => {
+  if (navigator && navigator.geolocation) {
+    try {
+      await navigator.geolocation.getCurrentPosition((position) => {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+};
 const homeButtonClick = () => {
   sendAnalyticsEvent({
     type: 'click',
@@ -294,11 +308,16 @@ const observer = new MutationObserver((mutations) => {
         let rawResponse;
         let ratingsLocationRawResponse;
         let offersRawResponse;
+        let url = ratingslocationURL;
+        await fetchCoordinates();
+        if (latitude && longitude) {
+          url = `${ratingslocationURL}?latitude=${latitude}&longitude=${longitude}`;
+        }
         if (hasOffer()) {
           [rawResponse, ratingsLocationRawResponse, offersRawResponse] = await Promise.all([
             fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
-            fetch(ratingslocationURL),
-            fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`)
+            fetch(url),
+            fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
           ]);
           offersData = await offersRawResponse.json();
         } else {
