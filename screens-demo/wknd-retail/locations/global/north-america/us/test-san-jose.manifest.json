@@ -9,7 +9,7 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1690801271870,
+  "timestamp": 1690801725761,
   "entries": [
     {
       "path": "/screens-demo/wknd-retail/locations/global/north-america/us/test-san-jose.html",
@@ -45,7 +45,7 @@
     },
     {
       "path": "/scripts/delayed.js",
-      "timestamp": 1690449284000
+      "timestamp": 1690801447000
     },
     {
       "path": "/tools/preview/preview.js",
