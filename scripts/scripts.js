@@ -1,4 +1,3 @@
-// import { request as graphqlRequest } from 'graphql-request';
 import {
   sampleRUM,
   buildBlock,
@@ -263,6 +262,8 @@ function loadDelayed() {
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
+  await decoreateThreeZoneMenuBoard(document,getMetadata('pos-data'));
+  await decoreateThreeZoneMenu(document,getMetadata('pos-data'));
   document.querySelector('header').remove();
   loadDelayed();
 }
@@ -312,99 +313,129 @@ export function sendAnalyticsEvent(capturedData) {
     data,
   }),"*");
 }
-// export function sendAnalyticsEvent() {
-//   const data = {
-//     'event.type': 'play',
-//     'event.coll_dts': '2023-07-26T08:04:21.759Z',
-//     'event.dts_start': '2023-07-26T08:04:21.759Z',
-//     'content.type': 'IMAGE',
-//     'content.action': '/content/dam/6thfloor-do-not-delete/Recognitions-3.png',
-//     'trn.product': '/content/dam/6thfloor-do-not-delete/Recognitions-3.png',
-//     'trn.amount': 0,
-//     'event.dts_end': '2023-07-26T08:08:47.495Z',
-//     'event.count': 265736,
-// eslint-disable-next-line max-len
-//     'event.value': 'Started Wed Jul 26 2023 13:34:21 GMT+0530 (India Standard Time) ended Wed Jul 26 2023 13:38:47 GMT+0530 (India Standard Time) Duration 265 seconds',
-//     'trn.quantity': 265736,
-//     'event.subtype': 'end',
-//   };
-//   window.parent.postMessage(JSON.stringify({
-//     namespace: 'screens-player',
-//     type: 'analytics-tracking-event',
-//     data,
-//   }));
-// }
+function decoreateThreeZoneMenuBoard(document,posDataUrl){
+  if(document.querySelector('.three-zone-menu-board')){
+    document.querySelector('body').classList.add('menuboardbody');
+    document.querySelector('header').remove();
+    var columnscontainer = document.querySelector('.columns-container');
+    columnscontainer.className = '';
+    var menuboarddiv = document.querySelector('.three-zone-menu-board');
+    menuboarddiv.className = '';
+    menuboarddiv.classList.add('three-zone-menu-board');
+    var childDivs = menuboarddiv.children;
+    // Iterate over the first-level child div elements and add a class to each
+    for (var i = 0; i < childDivs.length; i++) {
+      var div = childDivs[i];
+      div.classList.add('menucolumn');
+      var menuchildDivs = div.children;
+      // Append the outer <div> element to the document body
+      menuchildDivs[3].className = 'menu-div';
+      menuchildDivs[4].className = 'menu-div';
+    }
+    loadMenuItems(childDivs,'soup-menu','soup-menu-right',posDataUrl);
+  }
+}
 
-/*
-  // Access and process each JSON object
-      for (const key in data) {
-        console.log(key);
-        if (typeof data[key] === 'object' && Array.isArray(data[key].data)) {
-          data[key].data.forEach(obj => {
-            console.log('Product Name:', obj.product_name);
-            console.log('Price:', obj.price);
-            console.log('------------------');
-          });
+function decoreateThreeZoneMenu(document,posDataUrl){
+  if(document.querySelector('.three-zone-menu')){
+    document.querySelector('body').classList.add('wknd-menuboardbody');
+    document.querySelector('header').remove();
+    var columnscontainer = document.querySelector('.columns-container');
+    columnscontainer.className = '';
+    var menuboarddiv = document.querySelector('.three-zone-menu');
+    menuboarddiv.className = '';
+    menuboarddiv.classList.add('three-zone-menu');
+    var childDivs = menuboarddiv.children;
+    // Iterate over the first-level child div elements and add a class to each
+    for (var i = 0; i < childDivs.length; i++) {
+      var div = childDivs[i];
+      div.classList.add('wknd-menucolumn');
+      var menuchildDivs = div.children;
+      // Append the outer <div> element to the document body
+      menuchildDivs[3].className = 'menu-div';
+      menuchildDivs[4].className = 'menu-div';
+    }
+    loadMenuItems(childDivs,'soup-menu-wknd','soup-menu-wknd-right',posDataUrl);
+  }
+}
+
+function createMenuItems(menuItems,className,start,end){
+// Create the outer <div> element
+      var divElement = document.createElement("div");
+
+      // Create the <ul> element with class "soup-menu"
+      var ulElement = document.createElement("ul");
+      ulElement.className = className;
+
+      // Iterate over the soup items array
+      for (var j = start; j < end; j++) {
+
+        if(menuItems[j].availability === "true"){
+
+              var menuItem = menuItems[j];
+
+              // Create the <li> element
+              var liElement = document.createElement("li");
+
+              // Create the <p> element for the soup name
+              var nameElement = document.createElement("p");
+              nameElement.className = "name";
+              nameElement.textContent = menuItem.product_name;
+
+              // Create the <span> element for the seperator
+              var separator = document.createElement("span");
+              separator.className = "separator";
+              
+
+              // Create the <span> element for the soup price
+              var priceElement = document.createElement("span");
+              priceElement.className = "price";
+              priceElement.textContent = '$'+menuItem.price;
+
+              //nameElement.style.display = "inline";
+              //priceElement.style.display = "inline";
+              // Append the name and price elements to the <li> element
+              liElement.appendChild(nameElement);
+              liElement.appendChild(separator);
+              liElement.appendChild(priceElement);
+
+              var liElementDesciption = document.createElement("li");
+              var descriptionElement = document.createElement("span");
+              descriptionElement.className = "description";
+              descriptionElement.textContent = menuItem.description;
+              liElementDesciption.appendChild(descriptionElement);
+
+
+              // Append the <li> element to the <ul> element
+              ulElement.appendChild(liElement);
+              ulElement.appendChild(liElementDesciption);
         }
-      } */
+      }
 
-// export function getItems(categoryId) {
-//   const url = 'https://venia.magento.com/graphql'; // Replace with your GraphQL endpoint
-//   const headers = {
-//     // Add any custom headers you need, like authorization headers, etc.
-//     Authority: 'venia.magento.com',
-//     Store: 'wknd',
-//     'Content-type': 'application/json',
-//   };
-//   const dataRaw = `
-//   query{
-//     products(filter: { category_uid: { eq: ${categoryId}} }) {
-//       items {
-//         name
-//         sku
-//         url_key
-//         is_returnable
-//         image {
-//           label
-//           url
-//         }
-//         small_image{
-//           label
-//           url
-//         }
-//         swatch_image
-//         price_range{
-//         maximum_price{
-//           final_price{
-//             currency
-//             value
-//           }
-//         }
-//         minimum_price{
-//           final_price{
-//             currency
-//             value
-//           }
-//         }
-//         }
-//       }
-//         page_info {
-//           current_page
-//           page_size
-//           total_pages
-//         }
-//         total_count
-//       }
-//     }
-//   `;
-//   return graphqlRequest(url, dataRaw, null, headers)
-//     .then((response) => {
-//       if (!response) {
-//         throw new Error('Network response was not ok');
-//       }
-//       return response;
-//     })
-//     .catch((error) => {
-//       console.error('Error making the GraphQL request:', error.message);
-//     });
-// }
+      // Append the <ul> element to the outer <div> element
+      divElement.appendChild(ulElement);
+
+      return divElement;
+  }
+
+  function loadMenuItems(childDivs,className,classNameRight,posDataUrl){
+      fetch(posDataUrl)
+      .then(response => response.json())
+      .then(data => {
+        for (var i = 0; i < childDivs.length; i++) {
+          var div = childDivs[i];
+          var menuchildDivs = div.children;
+          var menuName = menuchildDivs[1].innerText.replace(/\s/g, "").toLowerCase();
+          var picturediv = menuchildDivs[3].children[0];
+          var length = data[menuName].data.length;
+          var start = 0;
+          var mid = length/2;
+          var end = length;
+          menuchildDivs[3].insertBefore(createMenuItems(data[menuName].data,className,start,mid),picturediv);
+          menuchildDivs[4].append(createMenuItems(data[menuName].data,classNameRight,mid,end));
+        }
+    })
+    .catch(error => {
+      console.log('Error:', error);
+    });
+  }
