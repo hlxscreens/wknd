@@ -78,6 +78,9 @@ header {
 
 main {
   text-align: var(--default-text-align);
+  /**
+  need to fix
+  */
   background: linear-gradient(to right bottom, lightgrey, white);
   min-height: 100vh;
 }
@@ -263,7 +266,7 @@ img {
 
 @media (min-width: 600px) {
   main .section {
-    padding: 1rem 1rem;
+    padding: 64px 32px;
   }
 }
 
@@ -278,7 +281,8 @@ img {
   }
 
   .section > div {
-    /* max-width: 90%; */
+    /**need to fix
+    /*max-width: 1200px;*/
     margin: auto;
   }
 }
@@ -708,6 +712,7 @@ main .section[data-section-status='initialized'] {
   color: var(--text-color)
 }
 
+/*need to fix*/
 .section {
   display: none;
 }
