@@ -8,7 +8,7 @@ import getProductsInCategory from './queries/products.graphql.js';
 
 import './styles.css';
 
-const endpoint = 'https://graphqlsidekick-p7pabzploq-uc.a.run.app';
+const endpoint = 'https://graphql.aem-screens.com';
 const rootCategoryKey = 'MTA0'; // UID
 const storeView = 'wknd';
 
