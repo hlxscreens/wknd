@@ -13,6 +13,53 @@ let sku;
 let offers;
 let offersData;
 
+let getProductDetails = `query getProductDetails($uid: String!) {
+  products(
+      filter: { sku:{eq: $uid}}
+      pageSize: 20
+      currentPage: 1
+  ) {
+      items {
+          name
+          sku
+          image{
+            url
+          }
+          description{
+            html
+          }
+          short_description{
+            html
+          }
+          thumbnail {
+              url
+              label
+          }
+          ... on ConfigurableProduct {
+              variants {
+                  product {
+                      thumbnail {
+                          url
+                          label
+                      }
+                    image{
+                      url
+                    }
+                  }
+              }
+          }
+          url_key
+          __typename
+      }
+      page_info {
+          current_page
+          page_size
+          total_pages
+      }
+      total_count
+    }
+  }`
+getProductDetails = getProductDetails.replaceAll(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ');
 const hasOffer = () => {
   const isOfferEnabled = offers && offers.type && offers.count && offers.order && offers.discount;
   return isOfferEnabled;
@@ -221,7 +268,21 @@ const renderProduct = (target, product) => {
   target.append(homeButtonDiv);
   target.append(productInfo);
 };
+const endpoint = 'https://graphql.aem-screens.com';
+const storeView = 'wknd';
 
+const fetchGet = async (endpoint, storeView, query, variables) => {
+  const api = new URL(endpoint);
+  api.searchParams.append('query', query);
+  api.searchParams.append('variables', JSON.stringify(variables));
+  return await fetch(api, {
+      method: 'GET',
+      headers: {
+          'content-Type': 'application/json',
+          'store': storeView,
+      },
+  });
+}
 const observer = new MutationObserver((mutations) => {
   Promise.all(mutations.map(async (mutation) => {
     if (mutation.type === 'attributes') {
@@ -254,18 +315,20 @@ const observer = new MutationObserver((mutations) => {
         let rawRatingsResponse;
         if (hasOffer()) {
           [rawResponse, rawRatingsResponse, offersRawResponse] = await Promise.all([
-            fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`),
+            //fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`),
+            fetchGet(endpoint,storeView,getProductDetails,{ uid: sku }),
             fetch(url),
             fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
           ]);
           offersData = await offersRawResponse.json();
         } else {
           [rawResponse, rawRatingsResponse] = await Promise.all([
-            fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`),
+            //fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`),
+            fetchGet(endpoint,storeView,getProductDetails,{ uid: sku }),
             fetch(url),
           ]);
         }
-        const { items } = (await rawResponse.json()).products;
+        const { items } = (await rawResponse.json()).data.products;
         if (Array.isArray(items) && items.length) {
           description = items[0].description;
           variantData = items[0].variants;

@@ -12,6 +12,51 @@ let offersData;
 let store;
 let latitude;
 let longitude;
+let getProductsInCategory = `query getProductsInCategory($uid: String!) {   
+    products(filter: { category_uid: { eq: $uid} }) {
+      items {
+        name
+        sku
+        url_key
+        is_returnable
+        image {
+          label
+          url
+        }
+        short_description{
+          html
+        }
+        small_image{
+          label
+          url
+        }
+        swatch_image
+        price_range{
+        maximum_price{
+          final_price{
+            currency
+            value
+          }
+        }
+        minimum_price{
+          final_price{
+            currency
+            value
+          }
+        }
+        }
+      }
+        page_info {
+          current_page
+          page_size
+          total_pages
+        }
+        total_count
+      }
+    }
+  `;
+
+getProductsInCategory = getProductsInCategory.replaceAll(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ');
 const fetchCoordinates = async () => {
   if (navigator && navigator.geolocation) {
     try {
@@ -289,7 +334,21 @@ const renderProductsPage = (target, products) => {
   const itemsPage = renderItems(products);
   target.append(itemsPage);
 };
+const endpoint = 'https://graphql.aem-screens.com';
+const storeView = 'wknd';
 
+const fetchGet = async (endpoint, storeView, query, variables) => {
+  const api = new URL(endpoint);
+  api.searchParams.append('query', query);
+  api.searchParams.append('variables', JSON.stringify(variables));
+  return await fetch(api, {
+      method: 'GET',
+      headers: {
+          'content-Type': 'application/json',
+          'store': storeView,
+      },
+  });
+}
 const observer = new MutationObserver((mutations) => {
   Promise.all(mutations.map(async (mutation) => {
     if (mutation.type === 'attributes') {
@@ -304,7 +363,6 @@ const observer = new MutationObserver((mutations) => {
       // fetch data
       isLoading = true;
       try {
-        // const rawResponse = await fetch(`https://main--wknd--hlxscreens.hlx.page/defaultData/${categoryId}.json`);
         let rawResponse;
         let ratingsLocationRawResponse;
         let offersRawResponse;
@@ -313,16 +371,19 @@ const observer = new MutationObserver((mutations) => {
         if (latitude && longitude) {
           url = `${ratingslocationURL}?latitude=${latitude}&longitude=${longitude}`;
         }
+        
         if (hasOffer()) {
           [rawResponse, ratingsLocationRawResponse, offersRawResponse] = await Promise.all([
-            fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
+            //fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
+            fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(url),
             fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
           ]);
           offersData = await offersRawResponse.json();
         } else {
           [rawResponse, ratingsLocationRawResponse] = await Promise.all([
-            fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
+            //fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
+            fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(ratingslocationURL),
           ]);
         }
@@ -335,7 +396,7 @@ const observer = new MutationObserver((mutations) => {
         const response = await rawResponse.json();
         const ratingsResponse = await ratingsLocationRawResponse.json();
         store = ratingsResponse.store;
-        items = response.products.items;
+        items = response.data.products.items;
         ratingsData = ratingsResponse.data;
         const width = window.innerWidth;
         if (width > 1500) {
@@ -348,8 +409,7 @@ const observer = new MutationObserver((mutations) => {
           perPage = 4;
         }
         totalPages = Math.ceil(items.length / perPage);
-        console.log(response.products.items);
-        renderProductsPage(mutation.target, response.products.items);
+        renderProductsPage(mutation.target, response.data.products.items);
       } catch (err) {
         console.log('loading failed');
       }
