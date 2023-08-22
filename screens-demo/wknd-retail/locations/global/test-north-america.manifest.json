@@ -9,7 +9,7 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1690968263425,
+  "timestamp": 1692184737037,
   "entries": [
     {
       "path": "/screens-demo/wknd-retail/locations/global/test-north-america.html",
@@ -21,7 +21,7 @@
     },
     {
       "path": "/styles/styles.css",
-      "timestamp": 1690561211000
+      "timestamp": 1690972276000
     },
     {
       "path": "/blocks/screens-looping-content/screens-looping-content.js",
