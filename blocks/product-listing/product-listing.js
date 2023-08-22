@@ -377,7 +377,7 @@ const observer = new MutationObserver((mutations) => {
             //fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(url),
-            fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
+            fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
           ]);
           offersData = await offersRawResponse.json();
         } else {

@@ -315,15 +315,13 @@ const observer = new MutationObserver((mutations) => {
         let rawRatingsResponse;
         if (hasOffer()) {
           [rawResponse, rawRatingsResponse, offersRawResponse] = await Promise.all([
-            //fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`),
             fetchGet(endpoint,storeView,getProductDetails,{ uid: sku }),
             fetch(url),
-            fetch(`https://offer-p7pabzploq-uc.a.run.app?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
+            fetch(`hhttps://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
           ]);
           offersData = await offersRawResponse.json();
         } else {
           [rawResponse, rawRatingsResponse] = await Promise.all([
-            //fetch(`https://productdetails-p7pabzploq-uc.a.run.app?sku=${sku}`),
             fetchGet(endpoint,storeView,getProductDetails,{ uid: sku }),
             fetch(url),
           ]);
