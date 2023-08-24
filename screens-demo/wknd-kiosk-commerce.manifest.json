@@ -9,11 +9,11 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1692184746410,
+  "timestamp": 1692702137810,
   "entries": [
     {
       "path": "/screens-demo/wknd-kiosk-commerce.html",
-      "timestamp": 1692184744121
+      "timestamp": 1692702136828
     },
     {
       "path": "/scripts/scripts.js",
@@ -73,7 +73,7 @@
     },
     {
       "path": "/blocks/product-listing/product-listing.js",
-      "timestamp": 1691483184000
+      "timestamp": 1692701238000
     },
     {
       "path": "/styles/lazy-styles.css",
