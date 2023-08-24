@@ -336,6 +336,15 @@ const renderProductsPage = (target, products) => {
 };
 const endpoint = 'https://graphql.aem-screens.com';
 const storeView = 'wknd';
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js',{ scope: '/' })
+    .then(registration => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    })
+    .catch(error => {
+      console.error('Service Worker registration failed:', error);
+    });
+}
 
 const fetchGet = async (endpoint, storeView, query, variables) => {
   const api = new URL(endpoint);
@@ -374,7 +383,6 @@ const observer = new MutationObserver((mutations) => {
         
         if (hasOffer()) {
           [rawResponse, ratingsLocationRawResponse, offersRawResponse] = await Promise.all([
-            //fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(url),
             fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
@@ -382,7 +390,6 @@ const observer = new MutationObserver((mutations) => {
           offersData = await offersRawResponse.json();
         } else {
           [rawResponse, ratingsLocationRawResponse] = await Promise.all([
-            //fetch(`https://graphqlfunction-p7pabzploq-uc.a.run.app?categoryId=${categoryId}`),
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(ratingslocationURL),
           ]);
