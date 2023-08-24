@@ -336,7 +336,7 @@ const renderProductsPage = (target, products) => {
 };
 const endpoint = 'https://graphql.aem-screens.com';
 const storeView = 'wknd';
-if ('serviceWorker' in navigator) {
+/*if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/service-worker.js',{ scope: '/' })
     .then(registration => {
       console.log('Service Worker registered with scope:', registration.scope);
@@ -344,7 +344,7 @@ if ('serviceWorker' in navigator) {
     .catch(error => {
       console.error('Service Worker registration failed:', error);
     });
-}
+}*/
 
 const fetchGet = async (endpoint, storeView, query, variables) => {
   const api = new URL(endpoint);
