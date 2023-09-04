@@ -1,67 +1,156 @@
-// Service Worker: sw.js
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.2.0/workbox-sw.js');
+// Cache your assets
+workbox.routing.registerRoute(
+  /\.(?:js|css|ttf)$/,
+  new workbox.strategies.StaleWhileRevalidate()
+);
 
-// Define a cache name
-const cacheName = 'my-cache-v1';
+workbox.routing.registerRoute(
+  /\.(?:html|jpg|jpeg|png|gif|svg)$/,
+  new workbox.strategies.CacheFirst()
+);
 
-// List of URLs to cache
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/script.js',
-  // Add more URLs here
-];
+workbox.routing.registerRoute(
+  /\.(?:html|jpg|jpeg|png|gif|svg).*$/,
+  new workbox.strategies.CacheFirst()
+);
 
-// Install event
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(cacheName)
-      .then(cache => cache.addAll(urlsToCache))
-      .catch(error => console.error('Cache installation failed:', error))
-  );
-});
+const imageDelivery = /^https:\/\/jnz3dtiuj77ca\.dummycachetest\.com\/.*\.(html|jpg|jpeg|png|gif|svg)$/;
 
-// Activate event
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys()
-      .then(cacheNames => {
-        return Promise.all(
-          cacheNames.map(name => {
-            if (name !== cacheName) {
-              return caches.delete(name);
-            }
-          })
-        );
-      })
-      .catch(error => console.error('Cache activation failed:', error))
-  );
-});
+workbox.routing.registerRoute(
+  imageDelivery,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'commerce-cache',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [0], // Cache responses with a 200 status code
+      }),
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 100, // Cache a maximum of 50 responses
+        maxAgeSeconds: 7 * 24 * 60 * 60, // Cache for 7 days
+      }),
+    ],
+  })
+);
 
-// Fetch event
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response; // Return cached response if available
-        }
+const reviewLocation = /^https:\/\/reviewlocation\.aem-screens\.com\/.*$/;
+workbox.routing.registerRoute(
+  reviewLocation,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'review-location',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [200], // Cache responses with a 200 status code
+      }),
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 100, // Cache a maximum of 50 responses
+        maxAgeSeconds: 7 * 24 * 60 * 60, // Cache for 7 days
+      }),
+    ],
+  })
+);
 
-        // If not cached, fetch from network
-        return fetch(event.request)
-          .then(networkResponse => {
-            // Cache the fetched response
-            if (networkResponse) {
-              const clonedResponse = networkResponse.clone();
-              caches.open(cacheName)
-                .then(cache => {
-                  cache.put(event.request, clonedResponse);
-                });
-            }
-            return networkResponse;
-          })
-          .catch(error => console.error('Fetch failed:', error));
-      })
-      .catch(error => console.error('Cache match failed:', error))
-  );
-});
+
+const offers = /^https:\/\/offers\.aem-screens\.com\/.*$/;
+workbox.routing.registerRoute(
+  offers,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'offers',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [200], // Cache responses with a 200 status code
+      }),
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 100, // Cache a maximum of 50 responses
+        maxAgeSeconds: 7 * 24 * 60 * 60, // Cache for 7 days
+      }),
+    ],
+  })
+);
+
+
+const graphQL = /^https:\/\/graphql\.aem-screens\.com\/.*$/;
+workbox.routing.registerRoute(
+  graphQL,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'graphQL-Response',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [200], // Cache responses with a 200 status code
+      }),
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 100, // Cache a maximum of 50 responses
+        maxAgeSeconds: 7 * 24 * 60 * 60, // Cache for 7 days
+      }),
+    ],
+  })
+);
+
+const franklinPreview = /^https:\/\/main--wknd--hlxscreens\.hlx\.page\/.*$/
+workbox.routing.registerRoute(
+  franklinPreview,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'franklin-prview',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [0], // Cache responses with a 200 status code
+      }),
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 100, // Cache a maximum of 50 responses
+        maxAgeSeconds: 7 * 24 * 60 * 60, // Cache for 7 days
+      }),
+    ],
+  })
+);
+
+const franklinLive = /^https:\/\/main--wknd--hlxscreens\.hlx\.live\/.*$/
+workbox.routing.registerRoute(
+  franklinLive,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'franklin-live',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [0], // Cache responses with a 200 status code
+      }),
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 100, // Cache a maximum of 50 responses
+        maxAgeSeconds: 7 * 24 * 60 * 60, // Cache for 7 days
+      }),
+    ],
+  })
+);
+
+const appRoot = '/screens-demo/wknd-kiosk-commerce';
+workbox.routing.registerRoute(
+  appRoot,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'appRoot',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [200], // Cache responses with a 200 status code
+      }),
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 100, // Cache a maximum of 50 responses
+        maxAgeSeconds: 7 * 24 * 60 * 60, // Cache for 7 days
+      }),
+    ],
+  })
+);
+
+const fonts = /^https:\/\/fonts\.googleapis\.com\/.*$/
+workbox.routing.registerRoute(
+  fonts,
+  new workbox.strategies.CacheFirst({
+    cacheName: 'fonts',
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [0], // Cache responses with a 200 status code
+      }),
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 100, // Cache a maximum of 50 responses
+        maxAgeSeconds: 7 * 24 * 60 * 60, // Cache for 7 days
+      }),
+    ],
+  })
+);
+

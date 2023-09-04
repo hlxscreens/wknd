@@ -26,7 +26,8 @@
     "@aem-screens/screens-offlineresources-generator": "0.0.3-screens-IA-B002",
     "axios": "^1.4.0",
     "graphql-request": "^6.1.0",
-    "node-fetch": "^3.3.0"
+    "node-fetch": "^3.3.0",
+    "workbox-cli": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.18.10",

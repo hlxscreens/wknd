@@ -336,15 +336,6 @@ const renderProductsPage = (target, products) => {
 };
 const endpoint = 'https://graphql.aem-screens.com';
 const storeView = 'wknd';
-/*if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js',{ scope: '/' })
-    .then(registration => {
-      console.log('Service Worker registered with scope:', registration.scope);
-    })
-    .catch(error => {
-      console.error('Service Worker registration failed:', error);
-    });
-}*/
 
 const fetchGet = async (endpoint, storeView, query, variables) => {
   const api = new URL(endpoint);
@@ -378,7 +369,8 @@ const observer = new MutationObserver((mutations) => {
         let url = ratingslocationURL;
         await fetchCoordinates();
         if (latitude && longitude) {
-          url = `${ratingslocationURL}?latitude=${latitude}&longitude=${longitude}`;
+          //url = `${ratingslocationURL}?latitude=${latitude}&longitude=${longitude}`;
+          url = `${ratingslocationURL}`;
         }
         
         if (hasOffer()) {

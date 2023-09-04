@@ -308,7 +308,8 @@ const observer = new MutationObserver((mutations) => {
         let url = ratingsLocation;
         await fetchCoordinates();
         if (latitude && longitude) {
-          url = `${ratingsLocation}?latitude=${latitude}&longitude=${longitude}`;
+          //url = `${ratingsLocation}?latitude=${latitude}&longitude=${longitude}`;
+          url = `${ratingsLocation}`;
         }
         let rawResponse;
         let offersRawResponse;
