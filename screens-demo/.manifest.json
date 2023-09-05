@@ -9,14 +9,15 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1692702134259,
+  "timestamp": 1693901503713,
   "entries": [
     {
-      "path": "/screens-demo/.html"
+      "path": "/screens-demo/.html",
+      "timestamp": 1693901502647
     },
     {
       "path": "/scripts/scripts.js",
-      "timestamp": 1690966060000
+      "timestamp": 1693860260000
     },
     {
       "path": "/styles/styles.css",
