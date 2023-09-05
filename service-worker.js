@@ -123,7 +123,7 @@ workbox.routing.registerRoute(
   })
 );
 
-const appRoot = '/screens-demo/wknd-kiosk-commerce';
+const appRoot = 'https://main--wknd--hlxscreens.hlx.live/screens-demo/wknd-kiosk-commerce'
 workbox.routing.registerRoute(
   appRoot,
   new workbox.strategies.CacheFirst({
