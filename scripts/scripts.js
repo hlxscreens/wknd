@@ -260,12 +260,6 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 async function loadPage() {
-  await loadEager(document);
-  await loadLazy(document);
-  await decoreateThreeZoneMenuBoard(document,getMetadata('pos-data'));
-  await decoreateThreeZoneMenu(document,getMetadata('pos-data'));
-  document.querySelector('header').remove();
-  loadDelayed();
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js')
       .then(function(registration) {
@@ -275,6 +269,12 @@ async function loadPage() {
         console.error('Service Worker registration failed:', error);
       });
   }  
+  await loadEager(document);
+  await loadLazy(document);
+  await decoreateThreeZoneMenuBoard(document,getMetadata('pos-data'));
+  await decoreateThreeZoneMenu(document,getMetadata('pos-data'));
+  document.querySelector('header').remove();
+  loadDelayed();
 }
 
 loadPage();
