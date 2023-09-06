@@ -56,7 +56,7 @@ let getProductsInCategory = `query getProductsInCategory($uid: String!) {
     }
   `;
 
-getProductsInCategory = getProductsInCategory.replaceAll(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ');
+getProductsInCategory = getProductsInCategory.split(/(?:\r\n|\r|\n|\t|[\s]{4})/g).join(' ');
 const fetchCoordinates = async () => {
   if (navigator && navigator.geolocation) {
     try {

@@ -58,8 +58,8 @@ let getProductDetails = `query getProductDetails($uid: String!) {
       }
       total_count
     }
-  }`
-getProductDetails = getProductDetails.replaceAll(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ');
+  }`;
+getProductDetails = getProductDetails.split(/(?:\r\n|\r|\n|\t|[\s]{4})/g).join(' ');
 const hasOffer = () => {
   const isOfferEnabled = offers && offers.type && offers.count && offers.order && offers.discount;
   return isOfferEnabled;
