@@ -9,19 +9,19 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1693906177251,
+  "timestamp": 1693998332357,
   "entries": [
     {
       "path": "/screens-demo/wknd-kiosk-commerce.html",
-      "timestamp": 1693901514000
+      "timestamp": 1693909155000
     },
     {
       "path": "/scripts/scripts.js",
-      "timestamp": 1693860260000
+      "timestamp": 1693979983000
     },
     {
       "path": "/service-worker.js",
-      "timestamp": 1693861025000
+      "timestamp": 1693913294000
     },
     {
       "path": "/styles/styles.css",
@@ -121,6 +121,10 @@
     },
     {
       "path": "/tools/preview/preview.js",
+      "timestamp": 1686036193000
+    },
+    {
+      "path": "/tools/preview/preview.css",
       "timestamp": 1686036193000
     },
     {

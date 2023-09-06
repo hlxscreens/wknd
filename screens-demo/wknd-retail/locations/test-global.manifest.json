@@ -9,15 +9,15 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1693906170137,
+  "timestamp": 1693998330104,
   "entries": [
     {
       "path": "/screens-demo/wknd-retail/locations/test-global.html",
-      "timestamp": 1693901516000
+      "timestamp": 1693909157000
     },
     {
       "path": "/scripts/scripts.js",
-      "timestamp": 1693860260000
+      "timestamp": 1693979983000
     },
     {
       "path": "/styles/styles.css",
