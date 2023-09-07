@@ -2,7 +2,7 @@
 import { sampleRUM } from './lib-franklin.js';
 
 // eslint-disable-next-line import/no-cycle
-import { onNavigate } from './scripts.js';
+import { onNavigate, sendAnalyticsEvent } from './scripts.js';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
@@ -40,6 +40,7 @@ function activateNextElement(divWrapping) {
 let carouselTimeout;
 let currentPlaying = 0;
 let idleTimer;
+let screenIdle = true;
 
 function handleTransition(sequence) {
   deactivateCurrentElement(sequence.children[currentPlaying], currentPlaying);
@@ -48,12 +49,42 @@ function handleTransition(sequence) {
     currentPlaying = 0;
   }
   activateNextElement(sequence.children[currentPlaying]);
+  if(screenIdle) {
+    if(sequence.children[currentPlaying].getElementsByTagName('video').length >0 ){
+      let duration = parseInt(sequence.children[currentPlaying].getAttribute('duration'));
+      let lastIndex = sequence.children[currentPlaying].getElementsByTagName('video')[0].getElementsByTagName('source')[0].src.lastIndexOf('/');
+      let length = sequence.children[currentPlaying].getElementsByTagName('video')[0].getElementsByTagName('source')[0].src.length;
+      let action = sequence.children[currentPlaying].getElementsByTagName('video')[0].getElementsByTagName('source')[0].src.substring(lastIndex,length);
+      sendAnalyticsEvent({
+        type: 'play',
+        start: (new Date()).toISOString(),
+        end: (new Date()).toISOString(),
+        value: 'Played video content path '+ action,
+        action: action,
+        amount: duration
+      });
+    }
+    else {
+      let lastIndex = sequence.children[currentPlaying].getElementsByTagName('img')[0].src.lastIndexOf('/');
+      let length = sequence.children[currentPlaying].getElementsByTagName('img')[0].src.length;
+      let action = sequence.children[currentPlaying].getElementsByTagName('img')[0].src.substring(lastIndex,length);
+      sendAnalyticsEvent({
+        type: 'play',
+        start: (new Date()).toISOString(),
+        end: (new Date()).toISOString(),
+        value: 'Showing image '+ action,
+        action: action,
+        amount: 8000
+      });
+    }
+  }
   const switchTimeout = sequence.children[currentPlaying].getAttribute('duration') || 8000;
   console.log(switchTimeout);
   carouselTimeout = setTimeout(handleTransition, switchTimeout, sequence);
 }
 
 function startCarousel(sequence) {
+  screenIdle = true;
   sequence.classList.add('idle');
   currentPlaying = 0;
   activateNextElement(sequence.children[currentPlaying]);
@@ -69,10 +100,11 @@ function idleHandler() {
       onNavigate('idle-carousel-container');
       startCarousel(sequence);
     }
-  });
+  })
 }
 
 function stopCarousel(sequence) {
+  screenIdle = false;
   sequence.classList.remove('idle');
   // eslint-disable-next-line no-restricted-syntax
   for (const item of sequence.children) {
@@ -85,6 +117,14 @@ function interactionEventHandler() {
   carousels.forEach((sequence) => {
     if (sequence.classList.contains('idle')) {
       onNavigate('category-container');
+      sendAnalyticsEvent({
+        type: 'click',
+        start: (new Date()).toISOString(),
+        end: (new Date()).toISOString(),
+        value: 'Ineraction with Ideal Screen',
+        action: 'Interaction with Ideal Screen',
+        amount: 0
+      });
       stopCarousel(sequence);
       clearTimeout(carouselTimeout);
     }
