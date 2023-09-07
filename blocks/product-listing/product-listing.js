@@ -1,4 +1,4 @@
-import { onNavigate, sendAnalyticsEvent } from '../../scripts/scripts.js';
+import { onNavigate, sendAnalyticsEvent, sendAnalyticsEventForProduct } from '../../scripts/scripts.js';
 
 let isLoading = false;
 let perPage = 10;
@@ -75,6 +75,8 @@ const homeButtonClick = () => {
     start: (new Date()).toISOString(),
     end: (new Date()).toISOString(),
     value: 'Home button clicked on product listing page',
+    action: 'Home',
+    amount: 0
   });
   onNavigate('category-container');
 };
@@ -125,11 +127,14 @@ const onProductClick = (event) => {
   productDetail.textContent = '';
   productDetail.setAttribute('sku', selectedProductSKU);
   productDetail.setAttribute('data-object', JSON.stringify(selectedProduct));
-  sendAnalyticsEvent({
+  sendAnalyticsEventForProduct({
     type: 'click',
     start: (new Date()).toISOString(),
     end: (new Date()).toISOString(),
     value: `Product with SKU ${selectedProductSKU} visited`,
+    amount: selectedProduct.price_range.maximum_price.final_price.value,
+    action: selectedProduct.name +' '+ selectedProduct.url_key,
+    product: selectedProduct.url_key
   });
   onNavigate('product-detail-container');
 };

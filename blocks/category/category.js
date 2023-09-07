@@ -18,6 +18,8 @@ const onCategoryClick = (event) => {
     start: (new Date()).toISOString(),
     end: (new Date()).toISOString(),
     value: `Category with categoryId ${categoryId} visited`,
+    action: categoryName,
+    amount: 0
   });
   onNavigate('product-listing-container');
 };

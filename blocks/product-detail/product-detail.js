@@ -83,6 +83,8 @@ const backButtonClick = () => {
       start: (new Date()).toISOString(),
       end: (new Date()).toISOString(),
       value: `Product with SKU ${sku} visited for ${visitingTime} seconds`,
+      action: 'Back',
+      amount: 0
     });
   }
   onNavigate('product-listing-container');
@@ -97,6 +99,8 @@ const homeButtonClick = () => {
       start: (new Date()).toISOString(),
       end: (new Date()).toISOString(),
       value: `Product with SKU ${sku} visited for ${visitingTime} seconds`,
+      action: 'Home',
+      amount: 0
     });
   }
   onNavigate('category-container');

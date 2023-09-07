@@ -308,9 +308,9 @@ export function sendAnalyticsEvent(capturedData) {
     'event.coll_dts': capturedData.start,
     'event.dts_start': capturedData.start,
     'content.type': '',
-    'content.action': '',
+    'content.action': capturedData.action,
     'trn.product': '',
-    'trn.amount': 0,
+    'trn.amount': capturedData.amount,
     'event.dts_end': capturedData.end,
     'event.count': 0,
     'event.value': capturedData.value,
@@ -324,6 +324,30 @@ export function sendAnalyticsEvent(capturedData) {
     data,
   }),"*");
 }
+
+export function sendAnalyticsEventForProduct(capturedData) {
+  const data = {
+    'event.type': capturedData.type,
+    'event.coll_dts': capturedData.start,
+    'event.dts_start': capturedData.start,
+    'content.type': '',
+    'content.action': capturedData.action,
+    'trn.product': capturedData.product,
+    'trn.amount': capturedData.amount,
+    'event.dts_end': capturedData.end,
+    'event.count': 0,
+    'event.value': capturedData.value,
+    'trn.quantity': 0,
+    'event.subtype': '',
+  };
+  console.log(capturedData.value);
+  window.parent.postMessage(JSON.stringify({
+    namespace: 'screens-player',
+    type: 'analytics-tracking-event',
+    data,
+  }),"*");
+}
+
 function decoreateThreeZoneMenuBoard(document,posDataUrl){
   if(document.querySelector('.three-zone-menu-board')){
     document.querySelector('body').classList.add('menuboardbody');
