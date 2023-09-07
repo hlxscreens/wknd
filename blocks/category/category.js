@@ -19,7 +19,11 @@ const onCategoryClick = (event) => {
     end: (new Date()).toISOString(),
     value: `Category with categoryId ${categoryId} visited`,
     action: categoryName,
-    amount: 0
+    amount: 0,
+    quantity: 0,
+    contentType: 'Category',
+    count: 1,
+    subType: 'end'
   });
   onNavigate('product-listing-container');
 };

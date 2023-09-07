@@ -307,15 +307,15 @@ export function sendAnalyticsEvent(capturedData) {
     'event.type': capturedData.type,
     'event.coll_dts': capturedData.start,
     'event.dts_start': capturedData.start,
-    'content.type': '',
+    'content.type': capturedData.contentType,
     'content.action': capturedData.action,
-    'trn.product': '',
+    'trn.product': capturedData.action,
     'trn.amount': capturedData.amount,
     'event.dts_end': capturedData.end,
-    'event.count': 0,
+    'event.count': capturedData.count,
     'event.value': capturedData.value,
-    'trn.quantity': 0,
-    'event.subtype': '',
+    'trn.quantity': capturedData.quantity,
+    'event.subtype': capturedData.subType
   };
   console.log(capturedData.value);
   window.parent.postMessage(JSON.stringify({
@@ -330,15 +330,15 @@ export function sendAnalyticsEventForProduct(capturedData) {
     'event.type': capturedData.type,
     'event.coll_dts': capturedData.start,
     'event.dts_start': capturedData.start,
-    'content.type': '',
+    'content.type': capturedData.contentType,
     'content.action': capturedData.action,
     'trn.product': capturedData.product,
     'trn.amount': capturedData.amount,
     'event.dts_end': capturedData.end,
-    'event.count': 0,
+    'event.count': capturedData.count,
     'event.value': capturedData.value,
-    'trn.quantity': 0,
-    'event.subtype': '',
+    'trn.quantity': capturedData.quantity,
+    'event.subtype': capturedData.subType
   };
   console.log(capturedData.value);
   window.parent.postMessage(JSON.stringify({

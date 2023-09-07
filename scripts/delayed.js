@@ -61,7 +61,11 @@ function handleTransition(sequence) {
         end: (new Date()).toISOString(),
         value: 'Played video content path '+ action,
         action: action,
-        amount: duration
+        quantity: duration,
+        contentType: 'VIDEO',
+        count: 1,
+        subType: 'end',
+        amount: 0
       });
     }
     else {
@@ -74,7 +78,11 @@ function handleTransition(sequence) {
         end: (new Date()).toISOString(),
         value: 'Showing image '+ action,
         action: action,
-        amount: 8000
+        quantity: 8000,
+        contentType: 'IMAGE',
+        count: 1,
+        subType: 'end',
+        amount: 0
       });
     }
   }
@@ -123,7 +131,11 @@ function interactionEventHandler() {
         end: (new Date()).toISOString(),
         value: 'Ineraction with Ideal Screen',
         action: 'Interaction with Ideal Screen',
-        amount: 0
+        amount: 0,
+        quantity: 1,
+        count: 1,
+        subType: 'end',
+        contentType: 'Touch Me'
       });
       stopCarousel(sequence);
       clearTimeout(carouselTimeout);

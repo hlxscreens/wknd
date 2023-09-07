@@ -76,7 +76,11 @@ const homeButtonClick = () => {
     end: (new Date()).toISOString(),
     value: 'Home button clicked on product listing page',
     action: 'Home',
-    amount: 0
+    amount: 0,
+    quantity: 0,
+    contentType: 'Button',
+    count: 1,
+    subType: 'end'
   });
   onNavigate('category-container');
 };
@@ -133,8 +137,12 @@ const onProductClick = (event) => {
     end: (new Date()).toISOString(),
     value: `Product with SKU ${selectedProductSKU} visited`,
     amount: selectedProduct.price_range.maximum_price.final_price.value,
+    quantity: 1,
+    count: 1,
     action: selectedProduct.name +' '+ selectedProduct.url_key,
-    product: selectedProduct.url_key
+    product: selectedProduct.url_key,
+    contentType: 'Product',
+    subType: 'end'
   });
   onNavigate('product-detail-container');
 };

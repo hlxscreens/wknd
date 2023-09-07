@@ -79,12 +79,16 @@ const backButtonClick = () => {
   const visitingTime = Math.floor((new Date() - lastNavigationTime) / 1000);
   if (sku) {
     sendAnalyticsEvent({
-      type: 'duration',
+      type: 'click',
       start: (new Date()).toISOString(),
       end: (new Date()).toISOString(),
       value: `Product with SKU ${sku} visited for ${visitingTime} seconds`,
       action: 'Back',
-      amount: 0
+      amount: 0,
+      quantity: 0,
+      contentType: 'Button',
+      count: 1,
+      subType: 'end'
     });
   }
   onNavigate('product-listing-container');
@@ -95,12 +99,16 @@ const homeButtonClick = () => {
   const visitingTime = Math.floor((new Date() - lastNavigationTime) / 1000);
   if (sku) {
     sendAnalyticsEvent({
-      type: 'duration',
+      type: 'click',
       start: (new Date()).toISOString(),
       end: (new Date()).toISOString(),
       value: `Product with SKU ${sku} visited for ${visitingTime} seconds`,
       action: 'Home',
-      amount: 0
+      amount: 0,
+      quantity: 0,
+      contentType: 'Button',
+      count: 1,
+      subType: 'end'
     });
   }
   onNavigate('category-container');
