@@ -208,3 +208,11 @@
   padding-top: 0;
   text-decoration: line-through;
 }
+
+.cartButton {
+  position: fixed;
+  top: 5%;
+  right: 5%;
+  width: 5rem;
+  height: 3rem;
+}

@@ -474,3 +474,91 @@ function createMenuItems(menuItems,className,start,end){
       console.log('Error:', error);
     });
   }
+
+// Cart functions
+const cart = {};
+let total = 0;
+
+function calculateTotal() {
+  console.log(cart);
+  total = Object.values(cart).reduce((accm, val) => accm + val, 0);
+  console.log(total);
+}
+
+function updateAllCartQuantity() {
+  const quantityElements = document.querySelectorAll('.cartQuantity');
+  [...quantityElements].forEach((quantityElement) => {
+    if (quantityElement.dataset.sku) {
+      quantityElement.textContent = cart[quantityElement.dataset.sku] || 0;
+    } else {
+      quantityElement.textContent = `Cart ${total}`;
+    }
+  });
+}
+
+export function addToCart(event) {
+  const { sku } = event.target.dataset;
+  if (cart[sku]) cart[sku] += 1;
+  else cart[sku] = 1;
+  calculateTotal();
+  updateAllCartQuantity();
+}
+
+export function removeFromCart(event) {
+  const { sku } = event.target.dataset;
+  if (cart[sku] && cart[sku] !== 1) cart[sku] -= 1;
+  else if (cart[sku]) delete cart[sku];
+  calculateTotal();
+  updateAllCartQuantity();
+}
+
+export function getCartInfo() {
+  return cart;
+}
+
+export function getTotalCart() {
+  return total;
+}
+
+export const renderCart = () => {
+  if (document.body.querySelector('.cardModal')) {
+    document.body.removeChild(document.body.querySelector('.cardModal'));
+  }
+  const sectionCart = document.createElement('div');
+  sectionCart.classList.add('cardModal');
+  const cartDiv = document.createElement('div');
+  cartDiv.classList.add('modal', 'hidden');
+  const overlay = document.createElement('div');
+  overlay.classList.add('overlay', 'hidden');
+  const cartInfos = getCartInfo();
+  const closeButton = document.createElement('button');
+  closeButton.classList.add('btn-close');
+  closeButton.textContent = 'X';
+  closeButton.addEventListener('click', () => {
+    document.querySelector('.modal').classList.add('hidden');
+    document.querySelector('.overlay').classList.add('hidden');
+  });
+  cartDiv.appendChild(closeButton);
+  if (cartInfos) {
+    Object.keys(cartInfos).forEach((key) => {
+      const productInCart = document.createElement('div');
+      productInCart.textContent = key;
+      cartDiv.appendChild(productInCart);
+    });
+  }
+  sectionCart.appendChild(overlay);
+  sectionCart.appendChild(cartDiv);
+  document.body.appendChild(sectionCart);
+};
+
+export const renderCartButton = () => {
+  const cartButton = document.createElement('div');
+  cartButton.classList.add('cartQuantity', 'cartButton');
+  cartButton.textContent = `Cart ${getTotalCart()}`;
+  cartButton.addEventListener('click', () => {
+    renderCart();
+    document.querySelector('.modal').classList.remove('hidden');
+    document.querySelector('.overlay').classList.remove('hidden');
+  });
+  return cartButton;
+};

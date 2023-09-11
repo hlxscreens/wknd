@@ -1,4 +1,4 @@
-import { onNavigate, sendAnalyticsEvent, sendAnalyticsEventForProduct } from '../../scripts/scripts.js';
+import { onNavigate, renderCartButton, sendAnalyticsEvent, sendAnalyticsEventForProduct } from '../../scripts/scripts.js';
 
 let isLoading = false;
 let perPage = 10;
@@ -346,6 +346,7 @@ const renderProductsPage = (target, products) => {
   target.append(getHeaderAndSearch(heading));
   const itemsPage = renderItems(products);
   target.append(itemsPage);
+  target.append(renderCartButton());
 };
 const endpoint = 'https://graphql.aem-screens.com';
 const storeView = 'wknd';

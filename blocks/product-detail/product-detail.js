@@ -1,5 +1,7 @@
 import { onNavigate, sendAnalyticsEvent } from '../../scripts/scripts.js';
 
+import { getCartInfo, addToCart, removeFromCart, getTotalCart, renderCartButton } from '../../scripts/scripts.js';
+
 let isLoading = false;
 let variantData;
 let variantSelected;
@@ -165,6 +167,35 @@ const navigationButton = (className, url, callback, alt) => {
   return navigationBtn;
 };
 
+const renderCartInfo = (productSKU) => {
+  const cart = getCartInfo();
+  let quantity = cart[productSKU];
+  if (!quantity) {
+    quantity = 0;
+  }
+  const cartInfo = document.createElement('div');
+  cartInfo.className = 'cart-info';
+  const addToCartButton = document.createElement('button');
+  addToCartButton.textContent = '+';
+  addToCartButton.dataset.sku = productSKU;
+  addToCartButton.addEventListener('click', addToCart);
+  const removeFromCartButton = document.createElement('button');
+  removeFromCartButton.textContent = '-';
+  removeFromCartButton.dataset.sku = productSKU;
+  removeFromCartButton.addEventListener('click', removeFromCart);
+  const quantityInfo = document.createElement('div');
+  quantityInfo.textContent = quantity;
+  quantityInfo.className = 'cartQuantity';
+  quantityInfo.dataset.sku = productSKU;
+  // if (!quantity) {
+  //   removeFromCartButton.disabled = true;
+  // }
+  cartInfo.appendChild(addToCartButton);
+  cartInfo.appendChild(quantityInfo);
+  cartInfo.appendChild(removeFromCartButton);
+  return cartInfo;
+};
+
 const getProductInfo = (product) => {
   // outer-div
   const productInfo = document.createElement('div');
@@ -266,6 +297,11 @@ const getProductInfo = (product) => {
   productDescription.append(ratingsDiv);
   productDescription.append(productDescriptionText);
   productDescription.append(locationDiv);
+  const cartInfo = renderCartInfo(product.sku);
+  const cartButton = renderCartButton();
+  console.log('CartInfo', cartInfo);
+  productDescription.append(cartInfo);
+  productDescription.append(cartButton);
   productInfo.append(productImgDiv);
   productInfo.append(productDescription);
   return productInfo;
