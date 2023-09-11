@@ -507,7 +507,11 @@ export function addToCart(event) {
 export function removeFromCart(event) {
   const { sku } = event.target.dataset;
   if (cart[sku] && cart[sku] !== 1) cart[sku] -= 1;
-  else if (cart[sku]) delete cart[sku];
+  else if (cart[sku]) {
+    delete cart[sku];
+    // eslint-disable-next-line no-use-before-define
+    openCart();
+  }
   calculateTotal();
   updateAllCartQuantity();
 }
@@ -583,14 +587,16 @@ export const renderCart = () => {
   document.body.appendChild(sectionCart);
 };
 
+const openCart = () => {
+  renderCart();
+  document.querySelector('.modal').classList.remove('hidden');
+  document.querySelector('.overlay').classList.remove('hidden');
+};
+
 export const renderCartButton = () => {
   const cartButton = document.createElement('div');
   cartButton.classList.add('cartQuantity', 'cartButton');
   cartButton.textContent = `Cart ${getTotalCart()}`;
-  cartButton.addEventListener('click', () => {
-    renderCart();
-    document.querySelector('.modal').classList.remove('hidden');
-    document.querySelector('.overlay').classList.remove('hidden');
-  });
+  cartButton.addEventListener('click', openCart);
   return cartButton;
 };
