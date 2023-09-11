@@ -520,6 +520,34 @@ export function getTotalCart() {
   return total;
 }
 
+export const renderCartInfo = (productSKU) => {
+  let quantity = getCartInfo()[productSKU];
+  if (!quantity) {
+    quantity = 0;
+  }
+  const cartInfo = document.createElement('div');
+  cartInfo.className = 'cart-info';
+  const addToCartButton = document.createElement('button');
+  addToCartButton.textContent = '+';
+  addToCartButton.dataset.sku = productSKU;
+  addToCartButton.addEventListener('click', addToCart);
+  const removeFromCartButton = document.createElement('button');
+  removeFromCartButton.textContent = '-';
+  removeFromCartButton.dataset.sku = productSKU;
+  removeFromCartButton.addEventListener('click', removeFromCart);
+  const quantityInfo = document.createElement('div');
+  quantityInfo.textContent = quantity;
+  quantityInfo.className = 'cartQuantity';
+  quantityInfo.dataset.sku = productSKU;
+  // if (!quantity) {
+  //   removeFromCartButton.disabled = true;
+  // }
+  cartInfo.appendChild(addToCartButton);
+  cartInfo.appendChild(quantityInfo);
+  cartInfo.appendChild(removeFromCartButton);
+  return cartInfo;
+};
+
 export const renderCart = () => {
   if (document.body.querySelector('.cardModal')) {
     document.body.removeChild(document.body.querySelector('.cardModal'));
@@ -542,7 +570,11 @@ export const renderCart = () => {
   if (cartInfos) {
     Object.keys(cartInfos).forEach((key) => {
       const productInCart = document.createElement('div');
-      productInCart.textContent = key;
+      productInCart.style.display = 'flex';
+      const productDescription = document.createElement('div');
+      productDescription.textContent = key;
+      productInCart.appendChild(productDescription);
+      productInCart.appendChild(renderCartInfo(key));
       cartDiv.appendChild(productInCart);
     });
   }

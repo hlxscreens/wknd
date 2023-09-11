@@ -1,6 +1,6 @@
 import { onNavigate, sendAnalyticsEvent } from '../../scripts/scripts.js';
 
-import { getCartInfo, addToCart, removeFromCart, getTotalCart, renderCartButton } from '../../scripts/scripts.js';
+import { renderCartButton, renderCartInfo } from '../../scripts/scripts.js';
 
 let isLoading = false;
 let variantData;
@@ -165,35 +165,6 @@ const navigationButton = (className, url, callback, alt) => {
   navigationBtn.append(btnText);
   navigationBtn.addEventListener('click', callback);
   return navigationBtn;
-};
-
-const renderCartInfo = (productSKU) => {
-  const cart = getCartInfo();
-  let quantity = cart[productSKU];
-  if (!quantity) {
-    quantity = 0;
-  }
-  const cartInfo = document.createElement('div');
-  cartInfo.className = 'cart-info';
-  const addToCartButton = document.createElement('button');
-  addToCartButton.textContent = '+';
-  addToCartButton.dataset.sku = productSKU;
-  addToCartButton.addEventListener('click', addToCart);
-  const removeFromCartButton = document.createElement('button');
-  removeFromCartButton.textContent = '-';
-  removeFromCartButton.dataset.sku = productSKU;
-  removeFromCartButton.addEventListener('click', removeFromCart);
-  const quantityInfo = document.createElement('div');
-  quantityInfo.textContent = quantity;
-  quantityInfo.className = 'cartQuantity';
-  quantityInfo.dataset.sku = productSKU;
-  // if (!quantity) {
-  //   removeFromCartButton.disabled = true;
-  // }
-  cartInfo.appendChild(addToCartButton);
-  cartInfo.appendChild(quantityInfo);
-  cartInfo.appendChild(removeFromCartButton);
-  return cartInfo;
 };
 
 const getProductInfo = (product) => {
