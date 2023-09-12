@@ -476,7 +476,7 @@ function createMenuItems(menuItems,className,start,end){
   }
 
 // Cart functions
-const cart = {};
+let cart = {};
 let total = 0;
 
 function calculateTotal() {
@@ -497,6 +497,7 @@ function updateAllCartQuantity() {
 }
 
 export function addToCart(event) {
+  event.stopPropagation();
   const { sku } = event.target.dataset;
   if (cart[sku]) cart[sku] += 1;
   else cart[sku] = 1;
@@ -505,6 +506,7 @@ export function addToCart(event) {
 }
 
 export function removeFromCart(event) {
+  event.stopPropagation();
   const { sku } = event.target.dataset;
   if (cart[sku] && cart[sku] !== 1) cart[sku] -= 1;
   else if (cart[sku]) {
@@ -552,6 +554,29 @@ export const renderCartInfo = (productSKU) => {
   return cartInfo;
 };
 
+const qrData = {};
+
+const getQRCode = () => {
+  /* eslint-disable no-undef, no-unused-vars */
+  const qrcode = new QRCode(document.getElementsByClassName('qrcode')[0], {
+    text: JSON.stringify(qrData), width: 400, height: 400, correctLevel: QRCode.CorrectLevel.H,
+  });
+  console.log('qrData', qrData);
+};
+
+const loadQRscript = (callback) => {
+  const script = document.createElement('script');
+  script.setAttribute('src', '/scripts/qrcode.min.js');
+  script.onload = callback;
+  document.head.appendChild(script);
+};
+
+const closeCart = () => {
+  if (!document.querySelector('.modal')) return;
+  document.querySelector('.modal').classList.add('hidden');
+  document.querySelector('.overlay').classList.add('hidden');
+};
+
 export const renderCart = () => {
   if (document.body.querySelector('.cardModal')) {
     document.body.removeChild(document.body.querySelector('.cardModal'));
@@ -566,10 +591,7 @@ export const renderCart = () => {
   const closeButton = document.createElement('button');
   closeButton.classList.add('btn-close');
   closeButton.textContent = 'X';
-  closeButton.addEventListener('click', () => {
-    document.querySelector('.modal').classList.add('hidden');
-    document.querySelector('.overlay').classList.add('hidden');
-  });
+  closeButton.addEventListener('click', closeCart);
   cartDiv.appendChild(closeButton);
   if (cartInfos) {
     Object.keys(cartInfos).forEach((key) => {
@@ -578,13 +600,26 @@ export const renderCart = () => {
       const productDescription = document.createElement('div');
       productDescription.textContent = key;
       productInCart.appendChild(productDescription);
-      productInCart.appendChild(renderCartInfo(key));
-      cartDiv.appendChild(productInCart);
+      qrData[key] = cart[key];
+      // productInCart.appendChild(renderCartInfo(key));
+      // cartDiv.appendChild(productInCart);
     });
   }
+
+  const QRCodeContainer = document.createElement('div');
+  QRCodeContainer.className = 'qrcode-container';
+  const QRCodeEle = document.createElement('div');
+  QRCodeEle.className = 'qrcode';
+  const QRCodeEleTitle = document.createElement('div');
+  QRCodeEleTitle.className = 'qrcode-title';
+  QRCodeEleTitle.textContent = 'Scan QR for cart';
+  QRCodeContainer.appendChild(QRCodeEleTitle);
+  QRCodeContainer.appendChild(QRCodeEle);
+  cartDiv.appendChild(QRCodeContainer);
   sectionCart.appendChild(overlay);
   sectionCart.appendChild(cartDiv);
   document.body.appendChild(sectionCart);
+  loadQRscript(getQRCode);
 };
 
 const openCart = () => {
@@ -599,4 +634,11 @@ export const renderCartButton = () => {
   cartButton.textContent = `Cart ${getTotalCart()}`;
   cartButton.addEventListener('click', openCart);
   return cartButton;
+};
+
+export const clearCart = () => {
+  cart = {};
+  closeCart();
+  calculateTotal();
+  updateAllCartQuantity();
 };

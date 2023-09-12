@@ -1,4 +1,4 @@
-import { onNavigate, renderCartButton, sendAnalyticsEvent, sendAnalyticsEventForProduct } from '../../scripts/scripts.js';
+import { onNavigate, renderCartButton, sendAnalyticsEvent, sendAnalyticsEventForProduct, renderCartInfo } from '../../scripts/scripts.js';
 
 let isLoading = false;
 let perPage = 10;
@@ -246,9 +246,11 @@ const getDetails = (product) => {
   const ratingsDiv = document.createElement('div');
   ratingsDiv.className = 'Stars';
   ratingsDiv.style.setProperty('--rating', ratingsData.find((rating) => rating.SKU === product.sku).Rating);
+  const cartInfo = renderCartInfo(product.sku);
   details.append(title);
   details.append(productPrice);
   details.append(ratingsDiv);
+  details.append(cartInfo);
   return details;
 };
 

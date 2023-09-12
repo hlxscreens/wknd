@@ -165,6 +165,9 @@
   border: 1px solid #ddd;
   border-radius: 15px;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .btn-close {
@@ -172,6 +175,7 @@
   padding: 0.5rem 0.7rem;
   background: #eee;
   border-radius: 50%;
+  align-self: end;
 }
 
 .overlay {

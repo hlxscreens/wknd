@@ -2,7 +2,7 @@
 import { sampleRUM } from './lib-franklin.js';
 
 // eslint-disable-next-line import/no-cycle
-import { onNavigate, sendAnalyticsEvent } from './scripts.js';
+import { onNavigate, sendAnalyticsEvent, clearCart } from './scripts.js';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
@@ -108,7 +108,8 @@ function idleHandler() {
       onNavigate('idle-carousel-container');
       startCarousel(sequence);
     }
-  })
+  });
+  clearCart();
 }
 
 function stopCarousel(sequence) {
