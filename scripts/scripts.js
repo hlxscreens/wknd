@@ -348,6 +348,30 @@ export function sendAnalyticsEventForProduct(capturedData) {
   }),"*");
 }
 
+function sendAnalyticsEventForProductAddedToCart(capturedData) {
+  const data = {
+    'event.type': capturedData.type,
+    'event.coll_dts': capturedData.start,
+    'event.dts_start': capturedData.start,
+    'content.type': capturedData.contentType,
+    'content.action': capturedData.action,
+    'trn.product': capturedData.product,
+    'trn.amount': capturedData.amount,
+    'event.dts_end': capturedData.end,
+    'event.count': capturedData.count,
+    'event.value': capturedData.value,
+    'trn.quantity': capturedData.quantity,
+    'event.subtype': capturedData.subType,
+    'event': 'scOpen'
+  };
+  console.log(capturedData.value);
+  window.parent.postMessage(JSON.stringify({
+    namespace: 'screens-player',
+    type: 'analytics-tracking-event',
+    data,
+  }),"*");
+}
+
 function decoreateThreeZoneMenuBoard(document,posDataUrl){
   if(document.querySelector('.three-zone-menu-board')){
     document.querySelector('body').classList.add('menuboardbody');
@@ -503,6 +527,20 @@ export function addToCart(event) {
   else cart[sku] = 1;
   calculateTotal();
   updateAllCartQuantity();
+  // send analytics data
+  sendAnalyticsEventForProductAddedToCart({
+    type: 'click',
+    start: (new Date()).toISOString(),
+    end: (new Date()).toISOString(),
+    value: `Product with SKU Test added to cart`,
+    amount: 39,
+    quantity: 1,
+    count: 1,
+    action: 'Testing for cart',
+    product: 'Test Product',
+    contentType: 'Product',
+    subType: 'end',
+  });
 }
 
 export function removeFromCart(event) {
@@ -562,6 +600,7 @@ const getQRCode = () => {
     text: JSON.stringify(qrData), width: 400, height: 400, correctLevel: QRCode.CorrectLevel.H,
   });
   console.log('qrData', qrData);
+  // send analytics data
 };
 
 const loadQRscript = (callback) => {
