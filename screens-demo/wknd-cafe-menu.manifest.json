@@ -9,7 +9,7 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1694518277499,
+  "timestamp": 1694603271660,
   "entries": [
     {
       "path": "/screens-demo/wknd-cafe-menu.html",
@@ -17,7 +17,7 @@
     },
     {
       "path": "/scripts/scripts.js",
-      "timestamp": 1694517580000
+      "timestamp": 1694594628000
     },
     {
       "path": "/styles/styles.css",
