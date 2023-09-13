@@ -362,8 +362,8 @@ function sendAnalyticsEventForProductAddedToCart(capturedData) {
     'event.value': capturedData.value,
     'trn.quantity': capturedData.quantity,
     'event.subtype': capturedData.subType,
-    'event': 'scOpen'
-  };
+    's.events': 'scOpen'
+  };  
   console.log(capturedData.value);
   window.parent.postMessage(JSON.stringify({
     namespace: 'screens-player',
