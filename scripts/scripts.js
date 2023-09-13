@@ -516,6 +516,8 @@ function updateAllCartQuantity() {
       quantityElement.textContent = cart[quantityElement.dataset.sku] || 0;
     } else {
       quantityElement.querySelector('span').textContent = `${total}`;
+      quantityElement.querySelector('img').style.animation = 'wiggle 2s linear';
+      setTimeout(() => { quantityElement.querySelector('img').style.animation = ''; }, 2000);
     }
   });
 }
