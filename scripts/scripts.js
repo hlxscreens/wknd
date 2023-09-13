@@ -572,10 +572,16 @@ export const renderCartInfo = (productSKU) => {
   const cartInfo = document.createElement('div');
   cartInfo.className = 'cart-info';
   const addToCartButton = document.createElement('button');
+  addToCartButton.style.lineHeight = 1;
+  addToCartButton.style.borderRadius = '100px';
+  addToCartButton.style.border = '1px';
   addToCartButton.textContent = '+';
   addToCartButton.dataset.sku = productSKU;
   addToCartButton.addEventListener('click', addToCart);
   const removeFromCartButton = document.createElement('button');
+  removeFromCartButton.style.lineHeight = 1;
+  removeFromCartButton.style.borderRadius = '100px';
+  removeFromCartButton.style.border = '1px';
   removeFromCartButton.textContent = '-';
   removeFromCartButton.dataset.sku = productSKU;
   removeFromCartButton.addEventListener('click', removeFromCart);
