@@ -515,7 +515,7 @@ function updateAllCartQuantity() {
     if (quantityElement.dataset.sku) {
       quantityElement.textContent = cart[quantityElement.dataset.sku] || 0;
     } else {
-      quantityElement.textContent = `Cart ${total}`;
+      quantityElement.querySelector('span').textContent = `${total}`;
     }
   });
 }
@@ -549,8 +549,6 @@ export function removeFromCart(event) {
   if (cart[sku] && cart[sku] !== 1) cart[sku] -= 1;
   else if (cart[sku]) {
     delete cart[sku];
-    // eslint-disable-next-line no-use-before-define
-    openCart();
   }
   calculateTotal();
   updateAllCartQuantity();
@@ -670,7 +668,21 @@ const openCart = () => {
 export const renderCartButton = () => {
   const cartButton = document.createElement('div');
   cartButton.classList.add('cartQuantity', 'cartButton');
-  cartButton.textContent = `Cart ${getTotalCart()}`;
+  cartButton.style.display = 'flex';
+  cartButton.style.flexDirection = 'column';
+  cartButton.style.alignItems = 'center';
+  const cartButtonSvg = new Image();
+  cartButtonSvg.style.height = '4rem';
+  cartButtonSvg.src = 'https://main--wknd--hlxscreens.hlx.live/screens-demo/cart-shopping-svgrepo-com.svg';
+  cartButtonSvg.alt = 'cart-button';
+  const cartDescription = document.createElement('span');
+  cartDescription.textContent = `${getTotalCart()}`;
+  cartDescription.style.position = 'relative';
+  cartDescription.style.top = '1rem';
+  cartDescription.style.paddingLeft = '0.5rem';
+  cartButton.appendChild(cartDescription);
+  cartButton.appendChild(cartButtonSvg);
+
   cartButton.addEventListener('click', openCart);
   return cartButton;
 };
