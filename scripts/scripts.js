@@ -620,7 +620,7 @@ const getQRCode = () => {
       subType: 'end'
     });
   }
-  clearCart();
+  afterCheckout();
 };
 
 const loadQRscript = (callback) => {
@@ -634,6 +634,8 @@ const closeCart = () => {
   if (!document.querySelector('.modal')) return;
   document.querySelector('.modal').classList.add('hidden');
   document.querySelector('.overlay').classList.add('hidden');
+
+  onNavigate('category-container');
 };
 
 export const renderCart = () => {
@@ -712,6 +714,14 @@ export const clearCart = () => {
   cart = {};
   productInCart = {};
   closeCart();
+  calculateTotal();
+  updateAllCartQuantity();
+  qrData = {};
+};
+
+export const afterCheckout = () => {
+  cart = {};
+  productInCart = {};
   calculateTotal();
   updateAllCartQuantity();
   qrData = {};
