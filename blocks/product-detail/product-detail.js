@@ -268,7 +268,7 @@ const getProductInfo = (product) => {
   productDescription.append(ratingsDiv);
   productDescription.append(productDescriptionText);
   productDescription.append(locationDiv);
-  const cartInfo = renderCartInfo(product.sku);
+  const cartInfo = renderCartInfo(product);
   const cartButton = renderCartButton();
   console.log('CartInfo', cartInfo);
   productDescription.append(cartInfo);

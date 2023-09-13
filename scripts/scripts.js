@@ -348,30 +348,6 @@ export function sendAnalyticsEventForProduct(capturedData) {
   }),"*");
 }
 
-function sendAnalyticsEventForProductAddedToCart(capturedData) {
-  const data = {
-    'event.type': capturedData.type,
-    'event.coll_dts': capturedData.start,
-    'event.dts_start': capturedData.start,
-    'content.type': capturedData.contentType,
-    'content.action': capturedData.action,
-    'trn.product': capturedData.product,
-    'trn.amount': capturedData.amount,
-    'event.dts_end': capturedData.end,
-    'event.count': capturedData.count,
-    'event.value': capturedData.value,
-    'trn.quantity': capturedData.quantity,
-    'event.subtype': capturedData.subType,
-    's.events': 'scOpen,event'
-  };  
-  console.log(capturedData.value);
-  window.parent.postMessage(JSON.stringify({
-    namespace: 'screens-player',
-    type: 'analytics-tracking-event',
-    data,
-  }),"*");
-}
-
 function decoreateThreeZoneMenuBoard(document,posDataUrl){
   if(document.querySelector('.three-zone-menu-board')){
     document.querySelector('body').classList.add('menuboardbody');
@@ -502,6 +478,7 @@ function createMenuItems(menuItems,className,start,end){
 // Cart functions
 let cart = {};
 let total = 0;
+let productInCart = {};
 
 function calculateTotal() {
   console.log(cart);
@@ -521,31 +498,36 @@ function updateAllCartQuantity() {
 }
 
 export function addToCart(event) {
+  const selectedProduct = event.currentTarget.dataset?.object
+    && JSON.parse(event.currentTarget.dataset.object);
   event.stopPropagation();
-  const { sku } = event.target.dataset;
+  const sku = selectedProduct.sku;
   if (cart[sku]) cart[sku] += 1;
   else cart[sku] = 1;
+  productInCart[sku] = selectedProduct;
   calculateTotal();
   updateAllCartQuantity();
   // send analytics data
-  sendAnalyticsEventForProductAddedToCart({
+  sendAnalyticsEventForProduct({
     type: 'click',
     start: (new Date()).toISOString(),
     end: (new Date()).toISOString(),
-    value: `Product with SKU Test added to cart`,
-    amount: 39,
+    value: `Product with SKU ${selectedProduct.sku} added to cart`,
+    amount: selectedProduct.price_range.maximum_price.final_price.value,
     quantity: 1,
     count: 1,
-    action: 'Testing for cart',
-    product: 'Test Product',
-    contentType: 'Product',
-    subType: 'end',
+    action: selectedProduct.name +' '+ selectedProduct.url_key,
+    product: selectedProduct.url_key,
+    contentType: 'Add To Cart',
+    subType: 'end'
   });
 }
 
 export function removeFromCart(event) {
+  const selectedProduct = event.currentTarget.dataset?.object
+    && JSON.parse(event.currentTarget.dataset.object);
   event.stopPropagation();
-  const { sku } = event.target.dataset;
+  const sku = selectedProduct.sku;
   if (cart[sku] && cart[sku] !== 1) cart[sku] -= 1;
   else if (cart[sku]) {
     delete cart[sku];
@@ -554,6 +536,20 @@ export function removeFromCart(event) {
   }
   calculateTotal();
   updateAllCartQuantity();
+  // send analytics data
+  sendAnalyticsEventForProduct({
+    type: 'click',
+    start: (new Date()).toISOString(),
+    end: (new Date()).toISOString(),
+    value: `Product with SKU ${selectedProduct.sku} removed from cart`,
+    amount: selectedProduct.price_range.maximum_price.final_price.value,
+    quantity: 1,
+    count: 1,
+    action: selectedProduct.name +' '+ selectedProduct.url_key,
+    product: selectedProduct.url_key,
+    contentType: 'Removed From Cart',
+    subType: 'end'
+  });
 }
 
 export function getCartInfo() {
@@ -564,8 +560,8 @@ export function getTotalCart() {
   return total;
 }
 
-export const renderCartInfo = (productSKU) => {
-  let quantity = getCartInfo()[productSKU];
+export const renderCartInfo = (product) => {
+  let quantity = getCartInfo()[product.sku];
   if (!quantity) {
     quantity = 0;
   }
@@ -573,16 +569,16 @@ export const renderCartInfo = (productSKU) => {
   cartInfo.className = 'cart-info';
   const addToCartButton = document.createElement('button');
   addToCartButton.textContent = '+';
-  addToCartButton.dataset.sku = productSKU;
+  addToCartButton.setAttribute('data-object', JSON.stringify(product));
   addToCartButton.addEventListener('click', addToCart);
   const removeFromCartButton = document.createElement('button');
   removeFromCartButton.textContent = '-';
-  removeFromCartButton.dataset.sku = productSKU;
+  removeFromCartButton.setAttribute('data-object', JSON.stringify(product));
   removeFromCartButton.addEventListener('click', removeFromCart);
   const quantityInfo = document.createElement('div');
   quantityInfo.textContent = quantity;
   quantityInfo.className = 'cartQuantity';
-  quantityInfo.dataset.sku = productSKU;
+  quantityInfo.dataset.sku = product.sku;
   // if (!quantity) {
   //   removeFromCartButton.disabled = true;
   // }
@@ -592,7 +588,7 @@ export const renderCartInfo = (productSKU) => {
   return cartInfo;
 };
 
-const qrData = {};
+let qrData = {};
 
 const getQRCode = () => {
   /* eslint-disable no-undef, no-unused-vars */
@@ -601,6 +597,24 @@ const getQRCode = () => {
   });
   console.log('qrData', qrData);
   // send analytics data
+  const iterableArray = Object.entries(qrData);
+  for (const [sku] of iterableArray) {
+    const productCheckedOut = productInCart[sku]
+    sendAnalyticsEventForProduct({
+      type: 'check out',
+      start: (new Date()).toISOString(),
+      end: (new Date()).toISOString(),
+      value: `Product with SKU ${productCheckedOut.sku} checked out`,
+      amount: productCheckedOut.price_range.maximum_price.final_price.value,
+      quantity: 1,
+      count: 1,
+      action: productCheckedOut.name +' '+ productCheckedOut.url_key,
+      product: productCheckedOut.url_key,
+      contentType: 'Check Out',
+      subType: 'end'
+    });
+  }
+  clearCart();
 };
 
 const loadQRscript = (callback) => {
@@ -644,7 +658,6 @@ export const renderCart = () => {
       // cartDiv.appendChild(productInCart);
     });
   }
-
   const QRCodeContainer = document.createElement('div');
   QRCodeContainer.className = 'qrcode-container';
   const QRCodeEle = document.createElement('div');
@@ -677,7 +690,9 @@ export const renderCartButton = () => {
 
 export const clearCart = () => {
   cart = {};
+  productInCart = {};
   closeCart();
   calculateTotal();
   updateAllCartQuantity();
+  qrData = {};
 };

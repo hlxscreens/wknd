@@ -246,7 +246,7 @@ const getDetails = (product) => {
   const ratingsDiv = document.createElement('div');
   ratingsDiv.className = 'Stars';
   ratingsDiv.style.setProperty('--rating', ratingsData.find((rating) => rating.SKU === product.sku).Rating);
-  const cartInfo = renderCartInfo(product.sku);
+  const cartInfo = renderCartInfo(product);
   details.append(title);
   details.append(productPrice);
   details.append(ratingsDiv);
