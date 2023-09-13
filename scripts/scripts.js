@@ -492,7 +492,9 @@ function updateAllCartQuantity() {
     if (quantityElement.dataset.sku) {
       quantityElement.textContent = cart[quantityElement.dataset.sku] || 0;
     } else {
-      quantityElement.textContent = `Cart ${total}`;
+      quantityElement.querySelector('span').textContent = `${total}`;
+      quantityElement.querySelector('img').style.animation = 'wiggle 2s linear';
+      setTimeout(() => { quantityElement.querySelector('img').style.animation = ''; }, 2000);
     }
   });
 }
@@ -531,8 +533,6 @@ export function removeFromCart(event) {
   if (cart[sku] && cart[sku] !== 1) cart[sku] -= 1;
   else if (cart[sku]) {
     delete cart[sku];
-    // eslint-disable-next-line no-use-before-define
-    openCart();
   }
   calculateTotal();
   updateAllCartQuantity();
@@ -568,10 +568,16 @@ export const renderCartInfo = (product) => {
   const cartInfo = document.createElement('div');
   cartInfo.className = 'cart-info';
   const addToCartButton = document.createElement('button');
+  addToCartButton.style.lineHeight = 1;
+  addToCartButton.style.borderRadius = '100px';
+  addToCartButton.style.border = '1px';
   addToCartButton.textContent = '+';
   addToCartButton.setAttribute('data-object', JSON.stringify(product));
   addToCartButton.addEventListener('click', addToCart);
   const removeFromCartButton = document.createElement('button');
+  removeFromCartButton.style.lineHeight = 1;
+  removeFromCartButton.style.borderRadius = '100px';
+  removeFromCartButton.style.border = '1px';
   removeFromCartButton.textContent = '-';
   removeFromCartButton.setAttribute('data-object', JSON.stringify(product));
   removeFromCartButton.addEventListener('click', removeFromCart);
@@ -683,7 +689,21 @@ const openCart = () => {
 export const renderCartButton = () => {
   const cartButton = document.createElement('div');
   cartButton.classList.add('cartQuantity', 'cartButton');
-  cartButton.textContent = `Cart ${getTotalCart()}`;
+  cartButton.style.display = 'flex';
+  cartButton.style.flexDirection = 'column';
+  cartButton.style.alignItems = 'center';
+  const cartButtonSvg = new Image();
+  cartButtonSvg.style.height = '4rem';
+  cartButtonSvg.src = 'https://main--wknd--hlxscreens.hlx.live/screens-demo/cart-shopping-svgrepo-com.svg';
+  cartButtonSvg.alt = 'cart-button';
+  const cartDescription = document.createElement('span');
+  cartDescription.textContent = `${getTotalCart()}`;
+  cartDescription.style.position = 'relative';
+  cartDescription.style.top = '1rem';
+  cartDescription.style.paddingLeft = '0.5rem';
+  cartButton.appendChild(cartDescription);
+  cartButton.appendChild(cartButtonSvg);
+
   cartButton.addEventListener('click', openCart);
   return cartButton;
 };
