@@ -264,7 +264,8 @@ async function loadPage() {
   await loadLazy(document);
   await decoreateThreeZoneMenuBoard(document,getMetadata('pos-data'));
   await decoreateThreeZoneMenu(document,getMetadata('pos-data'));
-  document.querySelector('header').remove();
+  if(document.querySelector('header'))
+    document.querySelector('header').remove();
   loadDelayed();
   registerServiceWorker();
 }
@@ -726,3 +727,29 @@ export const afterCheckout = () => {
   updateAllCartQuantity();
   qrData = {};
 };
+
+sampleRUM.always.on('screensloopingcontent', (data) => { 
+  console.log('screensloopingcontent event captured..........');
+  const sendPing = (pdata = data) => {
+        // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
+        const weight = 1;
+        const id = window.hlx.rum.id;
+        const body = JSON.stringify({ weight, id, referer: window.location.href, generation: window.hlx.RUM_GENERATION, checkpoint: 'screensloopingcontent', ...data });
+        const url = `https://rum.hlx.page/.rum/${weight}`;
+        // eslint-disable-next-line no-unused-expressions
+        navigator.sendBeacon(url, body);
+        // eslint-disable-next-line no-console
+        console.debug(`ping:${checkpoint}`, pdata);
+      };
+      sampleRUM.cases = sampleRUM.cases || {
+        cwv: () => sampleRUM.cwv(data) || true,
+        lazy: () => {
+          // use classic script to avoid CORS issues
+          const script = document.createElement('script');
+          script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
+          document.head.appendChild(script);
+          return true;
+        },
+      };
+      sendPing(data);
+});

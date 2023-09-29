@@ -102,7 +102,7 @@ export default async function decorate(block) {
         await checkForPlayableAssets(assets);
         while (currentIndex < assets.length) {
           const asset = assets[currentIndex];
-          sampleRUM('viewmedia',{source:'screens-looping-content-container',target:asset.link});
+          sampleRUM('screensloopingcontent',{source:'screens-looping-content-container',target:asset.link});
           const launchStartDate = parseStartDateString(asset.launchStartDate, asset.isGMT);
           const launchEndDate = parseEndDateString(asset.launchEndDate, asset.isGMT);
           const startTime = parseStartTimeString(asset.startTime, asset.isGMT);
