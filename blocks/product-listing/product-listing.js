@@ -362,7 +362,7 @@ const fetchGet = async (endpoint, storeView, query, variables) => {
       headers: {
           'content-Type': 'application/json',
           'store': storeView,
-          'X-App-Cache':'true'
+          'X-Cache-Strategy':'Stale-While-Revalidate'
       },
   });
 }
@@ -394,7 +394,7 @@ const observer = new MutationObserver((mutations) => {
           [rawResponse, ratingsLocationRawResponse, offersRawResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(url),
-            fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`,{ headers:{ 'X-App-Cache':'true'}}),
+            fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
           ]);
           offersData = await offersRawResponse.json();
         } else {
