@@ -299,6 +299,7 @@ const fetchGet = async (endpoint, storeView, query, variables) => {
       headers: {
           'content-Type': 'application/json',
           'store': storeView,
+          'X-Cache-Strategy':'Stale-While-Revalidate'
       },
   });
 }
@@ -337,13 +338,13 @@ const observer = new MutationObserver((mutations) => {
           [rawResponse, rawRatingsResponse, offersRawResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductDetails,{ uid: sku }),
             fetch(url),
-            fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`),
+            fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
           ]);
           offersData = await offersRawResponse.json();
         } else {
           [rawResponse, rawRatingsResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductDetails,{ uid: sku }),
-            fetch(url),
+            fetch(url,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
           ]);
         }
         const { items } = (await rawResponse.json()).data.products;
