@@ -393,14 +393,14 @@ const observer = new MutationObserver((mutations) => {
         if (hasOffer()) {
           [rawResponse, ratingsLocationRawResponse, offersRawResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
-            fetch(url),
+            fetch(url,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
             fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
           ]);
           offersData = await offersRawResponse.json();
         } else {
           [rawResponse, ratingsLocationRawResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
-            fetch(ratingslocationURL),
+            fetch(ratingslocationURL,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
           ]);
         }
         if (!rawResponse.ok || !ratingsLocationRawResponse.ok) {
