@@ -337,7 +337,7 @@ const observer = new MutationObserver((mutations) => {
         if (hasOffer()) {
           [rawResponse, rawRatingsResponse, offersRawResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductDetails,{ uid: sku }),
-            fetch(url),
+            fetch(url,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
             fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
           ]);
           offersData = await offersRawResponse.json();
