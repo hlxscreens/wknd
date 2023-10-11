@@ -299,7 +299,7 @@ const fetchGet = async (endpoint, storeView, query, variables) => {
       headers: {
           'content-Type': 'application/json',
           'store': storeView,
-          'X-Cache-Strategy':'Stale-While-Revalidate'
+          'X-Cache-Strategy':'stale-while-revalidate'
       },
   });
 }
@@ -337,14 +337,14 @@ const observer = new MutationObserver((mutations) => {
         if (hasOffer()) {
           [rawResponse, rawRatingsResponse, offersRawResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductDetails,{ uid: sku }),
-            fetch(url,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
-            fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
+            fetch(url,{ headers:{ 'X-Cache-Strategy':'stale-while-revalidate'}}),
+            fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`,{ headers:{ 'X-Cache-Strategy':'stale-while-revalidate'}}),
           ]);
           offersData = await offersRawResponse.json();
         } else {
           [rawResponse, rawRatingsResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductDetails,{ uid: sku }),
-            fetch(url,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}}),
+            fetch(url,{ headers:{ 'X-Cache-Strategy':'stale-while-revalidate'}}),
           ]);
         }
         const { items } = (await rawResponse.json()).data.products;
