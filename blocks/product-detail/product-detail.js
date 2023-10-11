@@ -195,29 +195,7 @@ const getProductInfo = (product) => {
       variantImgDiv.className = 'variant-img-div';
       const productImg = new Image();
       productImg.className = 'variants--variant-img';
-    
-      // URL of the image you want to fetch
-      const imageUrl = variant.product.image.url;
-
-      // Fetch the image
-      fetch(imageUrl,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}})
-        .then((response) => {
-          if (response.ok) {
-            return response.blob();
-          } else {
-            throw new Error("Image request failed");
-          }
-        })
-        .then((imageBlob) => {
-          // Create a URL for the image blob
-          const objectURL = URL.createObjectURL(imageBlob);
-
-          // Set the src attribute of the image element
-          productImg.src = objectURL;
-        })
-        .catch((error) => {
-          console.error("Error fetching image:", error);
-        });
+      productImg.src = variant.product.image.url;
       productImg.alt = variant.product.thumbnail.label;
       variantImgDiv.appendChild(productImg);
       variantImgDiv.setAttribute('index', idx);
