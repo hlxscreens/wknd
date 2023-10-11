@@ -264,7 +264,28 @@ const getItem = (product) => {
   imgDiv.className = 'product-img';
   imgDiv.setAttribute('id', product.sku);
   const img = new Image();
-  img.src = product.image.url;
+  // URL of the image you want to fetch
+  const imageUrl = product.image.url;
+
+  // Fetch the image
+  fetch(imageUrl,{ headers:{ 'X-Cache-Strategy':'Stale-While-Revalidate'}})
+    .then((response) => {
+      if (response.ok) {
+        return response.blob();
+      } else {
+        throw new Error("Image request failed");
+      }
+    })
+    .then((imageBlob) => {
+      // Create a URL for the image blob
+      const objectURL = URL.createObjectURL(imageBlob);
+      // Set the src attribute of the image element
+      img.src = objectURL;
+    })
+    .catch((error) => {
+      console.error("Error fetching image:", error);
+    });
+
   img.alt = product.image.label;
   imgDiv.append(img);
   productDiv.append(getDetails(product));
