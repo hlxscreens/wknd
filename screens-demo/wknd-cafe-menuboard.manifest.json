@@ -9,7 +9,7 @@
     ],
     "defaultProvider": "franklin"
   },
-  "timestamp": 1694603272418,
+  "timestamp": 1697624402811,
   "entries": [
     {
       "path": "/screens-demo/wknd-cafe-menuboard.html",
@@ -17,11 +17,11 @@
     },
     {
       "path": "/scripts/scripts.js",
-      "timestamp": 1694594628000
+      "timestamp": 1695989957000
     },
     {
       "path": "/styles/styles.css",
-      "timestamp": 1690972276000
+      "timestamp": 1694606645000
     },
     {
       "path": "/screens-demo/media_1342622f99e6ac916eebd5723b78e73d592f3d4dd.png?width=750&format=png&optimize=medium",
@@ -49,7 +49,7 @@
     },
     {
       "path": "/blocks/screens-looping-content/screens-looping-content.js",
-      "timestamp": 1686036191000
+      "timestamp": 1695983443000
     },
     {
       "path": "/blocks/screens-looping-content/screens-looping-content.css",
@@ -85,7 +85,7 @@
     },
     {
       "path": "/scripts/lib-franklin.js",
-      "timestamp": 1686036192000
+      "timestamp": 1695983443000
     },
     {
       "path": "/screens-demo/schedule.json",
