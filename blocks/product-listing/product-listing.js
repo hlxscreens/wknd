@@ -396,14 +396,14 @@ const observer = new MutationObserver((mutations) => {
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(url,{ headers:{ 'X-Cache-Strategy':'external-cache'}}),
             fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`,{ headers:{ 'X-Cache-Strategy':'external-cache'}}),
-            fetch(testCache,{ headers:{ 'X-Cache-Strategy':'external-cache','Cache-Control':'no-store'}})
+            fetch(testCache,{ headers:{ 'X-Cache-Strategy':'external-cache','Cache-Control':'max-age=0'}})
           ]);
           offersData = await offersRawResponse.json();
         } else {
           [rawResponse, ratingsLocationRawResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(ratingslocationURL,{ headers:{ 'X-Cache-Strategy':'external-cache'}}),
-            fetch(testCache,{ headers:{ 'X-Cache-Strategy':'external-cache','Cache-Control':'no-store'}})
+            fetch(testCache,{ headers:{ 'X-Cache-Strategy':'external-cache','Cache-Control':'max-age=0'}})
           ]);
         }
         if (!rawResponse.ok || !ratingsLocationRawResponse.ok) {
