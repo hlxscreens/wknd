@@ -384,6 +384,7 @@ const observer = new MutationObserver((mutations) => {
         let ratingsLocationRawResponse;
         let offersRawResponse;
         let url = ratingslocationURL;
+        let testCache = `https://publish-p11055-e20059.adobeaemcloud.com/content/test_site/us/en/cache-test.html`;
         await fetchCoordinates();
         if (latitude && longitude) {
           //url = `${ratingslocationURL}?latitude=${latitude}&longitude=${longitude}`;
@@ -395,12 +396,14 @@ const observer = new MutationObserver((mutations) => {
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(url,{ headers:{ 'X-Cache-Strategy':'external-cache'}}),
             fetch(`https://offers.aem-screens.com?type=${offers.type}&order=${offers.order}&count=${offers.count}`,{ headers:{ 'X-Cache-Strategy':'external-cache'}}),
+            fetch(testCache,{ headers:{ 'X-Cache-Strategy':'external-cache'}})
           ]);
           offersData = await offersRawResponse.json();
         } else {
           [rawResponse, ratingsLocationRawResponse] = await Promise.all([
             fetchGet(endpoint,storeView,getProductsInCategory,{ uid: categoryId }),
             fetch(ratingslocationURL,{ headers:{ 'X-Cache-Strategy':'external-cache'}}),
+            fetch(testCache,{ headers:{ 'X-Cache-Strategy':'external-cache'}})
           ]);
         }
         if (!rawResponse.ok || !ratingsLocationRawResponse.ok) {
