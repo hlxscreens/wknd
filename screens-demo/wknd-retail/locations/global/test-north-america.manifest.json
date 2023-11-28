@@ -1,19 +1,10 @@
 {
   "version": "3.0",
-  "contentDelivery": {
-    "providers": [
-      {
-        "name": "franklin",
-        "endpoint": "/"
-      }
-    ],
-    "defaultProvider": "franklin"
-  },
-  "timestamp": 1697624397312,
+  "timestamp": 1701165124557,
   "entries": [
     {
       "path": "/screens-demo/wknd-retail/locations/global/test-north-america.html",
-      "timestamp": 1693909156000
+      "timestamp": 1701165124557
     },
     {
       "path": "/scripts/scripts.js",
@@ -63,5 +54,14 @@
       "path": "/screens-demo/schedule.json",
       "timestamp": 1685981566000
     }
-  ]
+  ],
+  "contentDelivery": {
+    "providers": [
+      {
+        "name": "franklin",
+        "endpoint": "/"
+      }
+    ],
+    "defaultProvider": "franklin"
+  }
 }
