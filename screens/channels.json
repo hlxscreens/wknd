@@ -241,7 +241,7 @@
     {
       "manifestPath": "/screens-demo/wknd-kiosk-commerce.manifest.json",
       "lastModified": "2023-10-12T10:42:24.000Z",
-      "liveDate":1707824478,
+      "liveDate":"2024-03-01T10:42:24.000Z",
       "hierarchy": [
         {
           "title": "screens-demo",
